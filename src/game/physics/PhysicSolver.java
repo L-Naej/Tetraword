@@ -2,9 +2,9 @@ package game.physics;
 
 import java.util.ArrayList;
 
-import game.BrickType;
+
+import game.Brick;
 import game.GameBoard;
-import game.GameBoard.Cell;
 import game.physics.PhysicBrick.Mask;
 import game.utils.Coordinates;
 
@@ -19,13 +19,12 @@ import game.utils.Coordinates;
  */
 public class PhysicSolver {
   
-  public PhysicSolver(GameBoard board) {
-    this.board = board;
+  public PhysicSolver() {
     currentBrick = null;
     turnEnded = false;
   }
   
-  public void setNewCurrentBrick(PhysicBrick brick) {
+  public void setNewCurrentBrick(Brick brick) {
     currentBrick = brick;
     turnEnded = false;
   }
@@ -36,16 +35,15 @@ public class PhysicSolver {
     currentBrick.flip();
   }
   
-  public void resolvePhysic(GameBoard board) {
-    //TODO
-    Cell[][] currentBoard = board.getBoard();
-    Mask mask = currentBrick.getCurrentMask();
+  public void resolvePhysic(Brick[][] board) {
+    Mask mask = currentBrick.getPhysic().getCurrentMask();
+    Coordinates brickCoordinates = currentBrick.getCoordinates();
+    
     //Clean the last location of the brick
     for (int i = 0; i < Mask.MASK_HEIGHT && i < GameBoard.BOARD_HEIGHT; ++i) {
       for (int j = 0; j < Mask.MASK_WIDTH && j < GameBoard.BOARD_WIDTH; ++j) {
-        if (mask.mask[j][i] && currentBrick.coordinates.y != GameBoard.BOARD_HEIGHT - 1) {
-          currentBoard[currentBrick.coordinates.x + j][currentBrick.coordinates.y + 1 - i].id = 0;
-          currentBoard[currentBrick.coordinates.x + j][currentBrick.coordinates.y + 1 - i].brick = BrickType.NO_BRICK;
+        if (mask.mask[j][i] && brickCoordinates.y != GameBoard.BOARD_HEIGHT - 1) {
+          board[brickCoordinates.x + j][brickCoordinates.y + 1 - i] = null;
         }
       }
     }
@@ -53,14 +51,13 @@ public class PhysicSolver {
     for (int i = 0; i < Mask.MASK_HEIGHT && i < GameBoard.BOARD_HEIGHT; ++i) {
       for (int j = 0; j < Mask.MASK_WIDTH && j < GameBoard.BOARD_WIDTH; ++j) {
         if (mask.mask[j][i]) {
-          currentBoard[currentBrick.coordinates.x + j][currentBrick.coordinates.y - i].id = 1;
-          currentBoard[currentBrick.coordinates.x + j][currentBrick.coordinates.y - i].brick = BrickType.I;
+          board[brickCoordinates.x + j][brickCoordinates.y - i] = currentBrick;
         }
       }
     }
     
-    if (isBrickFalling(currentBoard))
-      currentBrick.fall();
+    if (isBrickFalling(board))
+      currentBrick.getPhysic().fall();
     else
       turnEnded = true;
   }
@@ -70,12 +67,13 @@ public class PhysicSolver {
   }
   
   ///PRIVATE METHODS
-  private boolean isBrickFalling(Cell[][] board) {
-    ArrayList<Coordinates> coordToTest = currentBrick.getCoordinatesForFallingTest();
+  private boolean isBrickFalling(Brick[][] board) {
+    ArrayList<Coordinates> coordToTest = currentBrick.getPhysic().getCoordinatesForFallingTest();
+    Coordinates brickCoordinates = currentBrick.getCoordinates();
     
     for (Coordinates coord : coordToTest) {
-      int yUnderMe = currentBrick.coordinates.y - coord.y - 1;
-      if (yUnderMe >= 0 &&  board[currentBrick.coordinates.x + coord.x][yUnderMe].brick != BrickType.NO_BRICK)
+      int yUnderMe = brickCoordinates.y - coord.y - 1;
+      if (yUnderMe >= 0 &&  board[brickCoordinates.x + coord.x][yUnderMe] != null)
         return false;
       else if (yUnderMe < 0)
         return false;
@@ -84,7 +82,6 @@ public class PhysicSolver {
   }
   
   ///FIELDS
-  private GameBoard board;
-  private PhysicBrick currentBrick;
+  private Brick currentBrick;
   private boolean turnEnded;
 }

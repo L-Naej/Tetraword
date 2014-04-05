@@ -13,38 +13,18 @@ import game.physics.PhysicSolver;
  */
 public class GameBoard implements UserEventsListener {
   
-  /**
-   * Internal class representing a board's cell.
-   * A cell contains an information about
-   * what type of brick it contains (can be BrickType.NO_BRICK)
-   * and its id. The id has no meaning if the BrickType is NO_BRICK.
-   * 
-   * @author L-Naej
-   *
-   */
-  public class Cell {
-    public BrickType brick;
-    public int id;
-  }
-
   public static final short BOARD_WIDTH = 10;
   public static final short BOARD_HEIGHT = 22;
   
-  private Cell[][] boardRepresentation;
-  private int lastId;
-  
   public GameBoard() {
-    boardRepresentation = new Cell[BOARD_WIDTH][BOARD_HEIGHT];
-    physic = new PhysicSolver(this);
+    boardRepresentation = new Brick[BOARD_WIDTH][BOARD_HEIGHT];
+    physic = new PhysicSolver();
     brickFactory = new BrickFactory();
     currentBrick = null;
-    
-    lastId = 0;
+
     for (short i = 0; i < BOARD_WIDTH; ++i)
       for (short j = 0; j < BOARD_HEIGHT; ++j) {
-        boardRepresentation[i][j] = new Cell();
-        boardRepresentation[i][j].brick = BrickType.NO_BRICK;
-        boardRepresentation[i][j].id = lastId;
+        boardRepresentation[i][j] = null;
       }
   }
   
@@ -54,18 +34,18 @@ public class GameBoard implements UserEventsListener {
     //TEST
     if (Math.random() < 0.5)
       currentBrick.flip();
-    physic.setNewCurrentBrick(currentBrick.getPhysic());
+    physic.setNewCurrentBrick(currentBrick);
   }
   
   public void doTurn() {
     
-    physic.resolvePhysic(this);
+    physic.resolvePhysic(boardRepresentation);
     if (physic.isTurnEnded()) {
       insertNewBrick();
     }
   }
   
-  public Cell[][] getBoard() {
+  public Brick[][] getBoard() {
     return boardRepresentation;
   }
   
@@ -100,6 +80,7 @@ public class GameBoard implements UserEventsListener {
   }
   
   ///FIELDS
+  private Brick[][] boardRepresentation;
   private PhysicSolver physic;
   private BrickFactory brickFactory;
   private Brick currentBrick;

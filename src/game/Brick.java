@@ -14,9 +14,10 @@ import game.utils.Coordinates;
  */
 public class Brick {
  
-  public Brick(BrickType type, Coordinates coordinates) {
+  public Brick(int id, BrickType type, Coordinates coordinates) {
     this.setType(type);
     this.setCoordinates(coordinates);
+    this.id = id;
     flipped = false;
     
     physic = PhysicBrick.createPhysicBrick(this);
@@ -24,6 +25,10 @@ public class Brick {
   
   public PhysicBrick getPhysic() {
     return physic;
+  }
+  
+  public int getId() {
+    return id;
   }
   
   public BrickType getType() {
@@ -62,6 +67,10 @@ public class Brick {
     flipped = !flipped;
     physic.flip();
   }
+  
+  public String toString() {
+    return Integer.toString(id);
+  }
 
   ///FIELDS
   /*
@@ -71,6 +80,7 @@ public class Brick {
   @SuppressWarnings("unused")
   private Brick() {}
   
+  private int id;
   private BrickType type;
   private Coordinates coordinates;
   /**

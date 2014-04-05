@@ -3,7 +3,6 @@ package game.physics;
 import java.util.ArrayList;
 
 import game.Brick;
-import game.utils.Coordinates;
 
 /**
  * Represents the Brick "I" in Tetris game.

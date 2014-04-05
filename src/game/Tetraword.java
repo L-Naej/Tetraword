@@ -1,8 +1,5 @@
 package game;
 
-import game.GameBoard.Cell;
-import game.physics.PhysicSolver;
-
 /**
  * Main class of Tetraword game.
  * @author L-Naej
@@ -59,10 +56,10 @@ public class Tetraword {
   }
   
   private void render() {
-    Cell currentBoard[][] = board.getBoard();
+    Brick currentBoard[][] = board.getBoard();
     for (short i = GameBoard.BOARD_HEIGHT - 1; i >= 0 ; --i) {
       for (short j = 0; j < GameBoard.BOARD_WIDTH; ++j) {
-        System.out.print(currentBoard[j][i].id);
+        System.out.print(currentBoard[j][i] == null ? 0 : 1);
       }
       System.out.println();
     }

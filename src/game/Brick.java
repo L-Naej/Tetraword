@@ -1,0 +1,86 @@
+package game;
+
+import game.physics.PhysicBrick;
+import game.utils.Coordinates;
+
+/**
+ * Game object storing all the components of a Brick
+ * (Physic, Graphic, Gameplay).
+ * A Brick does not exist before it enters the board.
+ * That's why the constructor requires coordinates in addition to
+ * the brick type.
+ * @author L-Naej
+ *
+ */
+public class Brick {
+ 
+  public Brick(BrickType type, Coordinates coordinates) {
+    this.setType(type);
+    this.setCoordinates(coordinates);
+    flipped = false;
+    
+    physic = PhysicBrick.createPhysicBrick(this);
+  }
+  
+  public PhysicBrick getPhysic() {
+    return physic;
+  }
+  
+  public BrickType getType() {
+    return type;
+  }
+
+  public void setType(BrickType type) {
+    this.type = type;
+  }
+
+  /**
+   * 
+   * @return the upper left coordinate of the brick.
+   */
+  public Coordinates getCoordinates() {
+    return coordinates;
+  }
+
+  /**
+   * Set the upper left coordinates of the brick.
+   * @param coordinates
+   */
+  public void setCoordinates(Coordinates coordinates) {
+    this.coordinates = coordinates;
+  }
+
+  /**
+   * A brick on the board can be rotated (flipped).
+   * @return wether or not the brick has been flipped by the player.
+   */
+  public boolean isFlipped() {
+    return flipped;
+  }
+
+  public void flip() {
+    flipped = !flipped;
+    physic.flip();
+  }
+
+  ///FIELDS
+  /*
+   * A Brick cannot be instanciated with default constructor.
+   * See class documentation.
+   */
+  @SuppressWarnings("unused")
+  private Brick() {}
+  
+  private BrickType type;
+  private Coordinates coordinates;
+  /**
+   * Indicate wether or not the Brick is flipped on
+   * the game board.
+   */
+  private boolean flipped;
+  
+  //Components
+  private PhysicBrick physic;
+  //private BrickRenderer graphics;
+  
+}

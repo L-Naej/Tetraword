@@ -32,7 +32,7 @@ public class PhysicSolver {
   public void flipBrick() {
     //Test if the brick can actually flip
     //TODO
-    currentBrick.flip();
+    currentBrick.getPhysic().flip();
   }
   
   public void resolvePhysic(Brick[][] board) {

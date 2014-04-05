@@ -18,8 +18,7 @@ public class Brick {
     this.setType(type);
     this.setCoordinates(coordinates);
     this.id = id;
-    flipped = false;
-    
+   
     physic = PhysicBrick.createPhysicBrick(this);
   }
   
@@ -55,18 +54,6 @@ public class Brick {
     this.coordinates = coordinates;
   }
 
-  /**
-   * A brick on the board can be rotated (flipped).
-   * @return wether or not the brick has been flipped by the player.
-   */
-  public boolean isFlipped() {
-    return flipped;
-  }
-
-  public void flip() {
-    flipped = !flipped;
-    physic.flip();
-  }
   
   public String toString() {
     return Integer.toString(id);
@@ -83,11 +70,6 @@ public class Brick {
   private int id;
   private BrickType type;
   private Coordinates coordinates;
-  /**
-   * Indicate wether or not the Brick is flipped on
-   * the game board.
-   */
-  private boolean flipped;
   
   //Components
   private PhysicBrick physic;

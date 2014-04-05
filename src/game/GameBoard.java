@@ -31,10 +31,10 @@ public class GameBoard implements UserEventsListener {
   public void insertNewBrick() {
     currentBrick = null;
     currentBrick = brickFactory.createNextBrick();
+    physic.setNewCurrentBrick(currentBrick);
     //TEST
     if (Math.random() < 0.5)
-      currentBrick.flip();
-    physic.setNewCurrentBrick(currentBrick);
+      physic.flipBrick();
   }
   
   public void doTurn() {

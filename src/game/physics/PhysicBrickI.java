@@ -36,10 +36,10 @@ public class PhysicBrickI extends PhysicBrick {
     masks.add(mask1);
     
     Mask mask2 = new Mask();
-    mask2.mask[3][1] = true;
-    mask2.mask[2][1] = true;
-    mask2.mask[1][1] = true;
-    mask2.mask[0][1] = true;
+    mask2.mask[0][2] = true;
+    mask2.mask[1][2] = true;
+    mask2.mask[2][2] = true;
+    mask2.mask[3][2] = true;
     masks.add(mask2);
     
     computeCoordinatesForFallingTest();

@@ -146,7 +146,7 @@ public abstract class PhysicBrick {
    */
   public final void computeCoordinatesForFallingTest() {
     boolean[][] mask = masks.get(currentMaskIndex).mask;
-    
+    coordinatesForFallingTest.clear();
     for (short i = 0; i < Mask.MASK_WIDTH; ++i) {
       short j = Mask.MASK_HEIGHT - 1;
       boolean coordFound = false;

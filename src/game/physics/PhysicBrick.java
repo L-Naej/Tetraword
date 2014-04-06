@@ -1,7 +1,15 @@
 package game.physics;
 
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.StringTokenizer;
 
 import game.Brick;
 import game.utils.Coordinates;
@@ -17,7 +25,7 @@ import game.utils.Coordinates;
  * @author L-Naej
  *
  */
-public abstract class PhysicBrick {
+public class PhysicBrick {
   
   /**
    * y=0 <=> bottom of the mask
@@ -38,19 +46,8 @@ public abstract class PhysicBrick {
   }
   
   public static final PhysicBrick createPhysicBrick(Brick brick) {
-    PhysicBrick result = null;
-    switch (brick.getType())
-    {
-    case I:
-      result = new PhysicBrickI(brick);
-      break;
-      
-    //TODO
-      default: 
-        assert false;
-        break;
-    }
-    
+    PhysicBrick result = new PhysicBrick(brick);
+
     return result;
   }
   
@@ -59,12 +56,45 @@ public abstract class PhysicBrick {
    * brick parameter.
    * @param the brick to represent in the physical world.
    */
-  public PhysicBrick(Brick brick){  
+  protected PhysicBrick(Brick brick){  
     coordinates = brick.getCoordinates();
     currentMaskIndex = 0;
     coordinatesForFallingTest = new ArrayList<>();
     coordinatesForLeftCollidingTest = new ArrayList<>();
     coordinatesForRightCollidingTest = new ArrayList<>();
+    
+    masks = new ArrayList<>();
+    
+    Path maskPath = FileSystems.getDefault().getPath("data", "Brick" + brick.getType().toString() +".mask");
+    List<String> result = null;
+    //TODO work on exception handling in Tetraword
+    try {
+      result = Files.readAllLines(maskPath, Charset.defaultCharset());
+    } catch (IOException e) {
+      assert false;
+      e.printStackTrace();
+    }
+   
+    ListIterator<String> iterator = result.listIterator();
+    
+    while (iterator.hasNext()) {
+      Mask mask = new Mask();
+      if ( !iterator.next().contains(";")) {
+        iterator.previous();
+      }
+      
+      for (short i = 0; i < Mask.MASK_HEIGHT; ++i) {
+        String line = iterator.next();
+        StringTokenizer tokenizer = new StringTokenizer(line, " ");
+        for (short j = 0; j < Mask.MASK_WIDTH; ++j) {
+          mask.mask[j][i] = tokenizer.nextToken().compareTo("1") == 0 ? true : false;
+        }
+      }
+      masks.add(mask);
+      
+    }
+    
+    computeCollidingCoordinates();
   }
   
   /**
@@ -99,9 +129,7 @@ public abstract class PhysicBrick {
     else ++currentMaskIndex;
     
     //Recompute physic
-    computeCoordinatesForFallingTest();
-    computeCoordinatesForLeftCollidingTest();
-    computeCoordinatesForRightCollidingTest();
+    computeCollidingCoordinates();
   }
  
   
@@ -130,60 +158,6 @@ public abstract class PhysicBrick {
   }
   
   /**
-   * @see getCoordinatesForFallingTest()
-   */
-  public final void computeCoordinatesForFallingTest() {
-    boolean[][] mask = masks.get(currentMaskIndex).mask;
-    coordinatesForFallingTest.clear();
-    for (short i = 0; i < Mask.MASK_WIDTH; ++i) {
-      short j = Mask.MASK_HEIGHT - 1;
-      boolean coordFound = false;
-      //Look for the first occupied cell in a line of the mask
-      while (j >= 0 && !coordFound) {
-        if (mask[i][j]) {
-          coordFound = true;
-          coordinatesForFallingTest.add(new Coordinates(i, j));
-        }
-        --j;
-      }
-    }
-  }
-  
-  public final void computeCoordinatesForLeftCollidingTest() {
-    boolean[][] mask = masks.get(currentMaskIndex).mask;
-    coordinatesForLeftCollidingTest.clear();
-    for (short i = 0; i < Mask.MASK_HEIGHT; ++i) {
-      short j = 0;
-      boolean coordFound = false;
-      //Look for the first occupied cell in a column of the mask
-      while (j < Mask.MASK_WIDTH && !coordFound) {
-        if (mask[j][i]) {
-          coordFound = true;
-          coordinatesForLeftCollidingTest.add(new Coordinates(j, i));
-        }
-        ++j;
-      }
-    }
-  }
-  
-  public final void computeCoordinatesForRightCollidingTest() {
-    boolean[][] mask = masks.get(currentMaskIndex).mask;
-    coordinatesForRightCollidingTest.clear();
-    for (short i = 0; i < Mask.MASK_HEIGHT; ++i) {
-      short j = Mask.MASK_WIDTH - 1;
-      boolean coordFound = false;
-      //Look for the first occupied cell in a column of the mask
-      while (j >= 0 && !coordFound) {
-        if (mask[j][i]) {
-          coordFound = true;
-          coordinatesForRightCollidingTest.add(new Coordinates(j, i));
-        }
-        --j;
-      }
-    }
-  }
-  
-  /**
    * Make the brick "fall", i.e make
    * its vertical coordinates move down from
    * one step. The Brick does not check if this move
@@ -202,6 +176,67 @@ public abstract class PhysicBrick {
   
   public void moveRight() {
     ++coordinates.x;
+  }
+  
+  
+  private final void computeCollidingCoordinates() {
+    computeCoordinatesForFallingTest();
+    computeCoordinatesForLeftCollidingTest();
+    computeCoordinatesForRightCollidingTest();
+  }
+  
+  /**
+   * @see getCoordinatesForFallingTest()
+   */
+  private final void computeCoordinatesForFallingTest() {
+    boolean[][] mask = masks.get(currentMaskIndex).mask;
+    coordinatesForFallingTest.clear();
+    for (short i = 0; i < Mask.MASK_WIDTH; ++i) {
+      short j = Mask.MASK_HEIGHT - 1;
+      boolean coordFound = false;
+      //Look for the first occupied cell in a line of the mask
+      while (j >= 0 && !coordFound) {
+        if (mask[i][j]) {
+          coordFound = true;
+          coordinatesForFallingTest.add(new Coordinates(i, j));
+        }
+        --j;
+      }
+    }
+  }
+  
+  private final void computeCoordinatesForLeftCollidingTest() {
+    boolean[][] mask = masks.get(currentMaskIndex).mask;
+    coordinatesForLeftCollidingTest.clear();
+    for (short i = 0; i < Mask.MASK_HEIGHT; ++i) {
+      short j = 0;
+      boolean coordFound = false;
+      //Look for the first occupied cell in a column of the mask
+      while (j < Mask.MASK_WIDTH && !coordFound) {
+        if (mask[j][i]) {
+          coordFound = true;
+          coordinatesForLeftCollidingTest.add(new Coordinates(j, i));
+        }
+        ++j;
+      }
+    }
+  }
+  
+  private final void computeCoordinatesForRightCollidingTest() {
+    boolean[][] mask = masks.get(currentMaskIndex).mask;
+    coordinatesForRightCollidingTest.clear();
+    for (short i = 0; i < Mask.MASK_HEIGHT; ++i) {
+      short j = Mask.MASK_WIDTH - 1;
+      boolean coordFound = false;
+      //Look for the first occupied cell in a column of the mask
+      while (j >= 0 && !coordFound) {
+        if (mask[j][i]) {
+          coordFound = true;
+          coordinatesForRightCollidingTest.add(new Coordinates(j, i));
+        }
+        --j;
+      }
+    }
   }
   
   ///FIELDS

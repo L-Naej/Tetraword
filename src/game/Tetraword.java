@@ -8,7 +8,6 @@ package game;
 public class Tetraword {
 
   public static void main(String[] args) {
-    
     Tetraword game = new Tetraword();
     game.generateNewBoard();
     
@@ -59,7 +58,12 @@ public class Tetraword {
     Brick currentBoard[][] = board.getBoard();
     for (short i = GameBoard.BOARD_HEIGHT - 1; i >= 0 ; --i) {
       for (short j = 0; j < GameBoard.BOARD_WIDTH; ++j) {
-        System.out.print(currentBoard[j][i] == null ? 0 : Integer.toString(currentBoard[j][i].getId() % 10));
+        if (currentBoard[j][i] == null)
+          System.out.print("0");
+        else {
+          int displayNumber = currentBoard[j][i].getId() % 10;
+          System.out.print(Integer.toString(displayNumber == 0 ? 1 : displayNumber));
+        }
       }
       System.out.println();
     }

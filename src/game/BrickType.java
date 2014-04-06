@@ -7,12 +7,12 @@ package game;
  *
  */
 public enum BrickType {
-  NO_BRICK,
   I, 
   J,
   L,
   O,
   S,
   T,
-  Z
+  Z;
+
 }

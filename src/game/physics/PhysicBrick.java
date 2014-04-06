@@ -63,6 +63,8 @@ public abstract class PhysicBrick {
     coordinates = brick.getCoordinates();
     currentMaskIndex = 0;
     coordinatesForFallingTest = new ArrayList<>();
+    coordinatesForLeftCollidingTest = new ArrayList<>();
+    coordinatesForRightCollidingTest = new ArrayList<>();
   }
   
   /**
@@ -98,31 +100,10 @@ public abstract class PhysicBrick {
     
     //Recompute physic
     computeCoordinatesForFallingTest();
+    computeCoordinatesForLeftCollidingTest();
+    computeCoordinatesForRightCollidingTest();
   }
-  
-  /**
-   * Indicate whether or not the Brick lies on
-   * another brick or the ground. In other words, 
-   * this method tells if this brick should fall next 
-   * turn or not.
-   * @param board the board where the brick is evolving
-   * @return true if the brick is "in the air". 
-   * false if the brick lies on another brick or the ground.
-   * 
-   */
-  /*
-  public boolean isFalling(Cell[][] board) {
-    for (short i = 0; i < NUM_COMPONENTS; ++i) {
-      //Check if there is a brick under this brick, and if it's not itself. OR check if the brick is on the ground
-      if ( (board[coordinates[i].x][coordinates[i].y-1].brick != BrickType.NO_BRICK
-          && board[coordinates[i].x][coordinates[i].y-1].id != board[coordinates[i].x][coordinates[i].y].id)
-          || coordinates[i].y == 0)
-        return false;
-    }
-    
-    return true;
-  }
-  */
+ 
   
   /**
    * Coordinates for falling test are the cells of the brick which are
@@ -140,7 +121,14 @@ public abstract class PhysicBrick {
     return coordinatesForFallingTest;
   }
   
-
+  public ArrayList<Coordinates> getCoordinatesForLeftCollidingTest() {
+    return coordinatesForLeftCollidingTest;
+  }
+  
+  public ArrayList<Coordinates> getCoordinatesForRightCollidingTest() {
+    return coordinatesForRightCollidingTest;
+  }
+  
   /**
    * @see getCoordinatesForFallingTest()
    */
@@ -150,11 +138,45 @@ public abstract class PhysicBrick {
     for (short i = 0; i < Mask.MASK_WIDTH; ++i) {
       short j = Mask.MASK_HEIGHT - 1;
       boolean coordFound = false;
-      //Look for the first occupied cell in a column of the mask
+      //Look for the first occupied cell in a line of the mask
       while (j >= 0 && !coordFound) {
         if (mask[i][j]) {
           coordFound = true;
           coordinatesForFallingTest.add(new Coordinates(i, j));
+        }
+        --j;
+      }
+    }
+  }
+  
+  public final void computeCoordinatesForLeftCollidingTest() {
+    boolean[][] mask = masks.get(currentMaskIndex).mask;
+    coordinatesForLeftCollidingTest.clear();
+    for (short i = 0; i < Mask.MASK_HEIGHT; ++i) {
+      short j = 0;
+      boolean coordFound = false;
+      //Look for the first occupied cell in a column of the mask
+      while (j < Mask.MASK_WIDTH && !coordFound) {
+        if (mask[j][i]) {
+          coordFound = true;
+          coordinatesForLeftCollidingTest.add(new Coordinates(j, i));
+        }
+        ++j;
+      }
+    }
+  }
+  
+  public final void computeCoordinatesForRightCollidingTest() {
+    boolean[][] mask = masks.get(currentMaskIndex).mask;
+    coordinatesForRightCollidingTest.clear();
+    for (short i = 0; i < Mask.MASK_HEIGHT; ++i) {
+      short j = Mask.MASK_WIDTH - 1;
+      boolean coordFound = false;
+      //Look for the first occupied cell in a column of the mask
+      while (j >= 0 && !coordFound) {
+        if (mask[j][i]) {
+          coordFound = true;
+          coordinatesForRightCollidingTest.add(new Coordinates(j, i));
         }
         --j;
       }
@@ -168,16 +190,26 @@ public abstract class PhysicBrick {
    * will move it outside of the board, it's the responsibility
    * of the caller to make that check before calling fall().
    * @see PhysicSolver
-   * @see liesOnSomething()
    */
   final public void fall() {
       --coordinates.y;
   }
 
 
+  public void moveLeft() {
+    --coordinates.x;
+  }
+  
+  public void moveRight() {
+    ++coordinates.x;
+  }
+  
   ///FIELDS
   protected Coordinates coordinates;
   protected ArrayList<Coordinates> coordinatesForFallingTest;
+  protected ArrayList<Coordinates> coordinatesForLeftCollidingTest;
+  protected ArrayList<Coordinates> coordinatesForRightCollidingTest;
   protected ArrayList<Mask> masks;
   protected short currentMaskIndex;
+
 }

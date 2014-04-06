@@ -1,6 +1,9 @@
 package game;
 
+import game.physics.IPhysicEventListener;
+import game.physics.IPhysicSolver;
 import game.physics.PhysicSolver;
+import game.utils.Direction;
 
 /**
  * @author L-Naej
@@ -11,14 +14,16 @@ import game.physics.PhysicSolver;
  * This is a purely data class and it does no computation.
  *
  */
-public class GameBoard implements UserEventsListener {
+public class GameBoard implements UserEventsListener, IPhysicEventListener {
   
   public static final short BOARD_WIDTH = 10;
   public static final short BOARD_HEIGHT = 22;
   
   public GameBoard() {
     boardRepresentation = new Brick[BOARD_WIDTH][BOARD_HEIGHT];
-    physic = new PhysicSolver();
+    physic = new PhysicSolver(boardRepresentation);
+    physic.addPhysicEventListener(this);
+    
     brickFactory = new BrickFactory();
     currentBrick = null;
 
@@ -31,23 +36,44 @@ public class GameBoard implements UserEventsListener {
   public void insertNewBrick() {
     currentBrick = null;
     currentBrick = brickFactory.createNextBrick();
-    physic.setNewCurrentBrick(currentBrick);
+    physic.insertNewBrick(currentBrick);
     //TEST
     if (Math.random() < 0.5)
-      physic.flipBrick();
+      physic.tryToFlipBrick();
   }
   
   public void doTurn() {
-    
-    physic.resolvePhysic(boardRepresentation);
-    if (physic.isTurnEnded()) {
-      insertNewBrick();
-    }
+    double rand = Math.random();
+    if (rand < 0.2)
+      physic.tryToMove(Direction.LEFT);
+    else if (rand >= 0.2 && rand < 0.5)
+      physic.tryToMove(Direction.RIGHT);
+    else
+      physic.tryToMove(Direction.DOWN);
+    physic.resolvePhysic();
   }
   
   public Brick[][] getBoard() {
     return boardRepresentation;
   }
+  
+  @Override
+  public void onBrickTouchsGround() {
+    insertNewBrick();
+  }
+
+  @Override
+  public void onBoardFull() {
+    System.out.println("GAME FINISHED");
+    System.exit(0);
+  }
+
+  @Override
+  public void onLineCompleted(int lineIndex) {
+    // TODO Auto-generated method stub
+    
+  }
+  
   
   @Override
   public void moveBrickLeft() {
@@ -81,7 +107,7 @@ public class GameBoard implements UserEventsListener {
   
   ///FIELDS
   private Brick[][] boardRepresentation;
-  private PhysicSolver physic;
+  private IPhysicSolver physic;
   private BrickFactory brickFactory;
   private Brick currentBrick;
 

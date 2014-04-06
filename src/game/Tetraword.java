@@ -59,7 +59,7 @@ public class Tetraword {
     Brick currentBoard[][] = board.getBoard();
     for (short i = GameBoard.BOARD_HEIGHT - 1; i >= 0 ; --i) {
       for (short j = 0; j < GameBoard.BOARD_WIDTH; ++j) {
-        System.out.print(currentBoard[j][i] == null ? 0 : 1);
+        System.out.print(currentBoard[j][i] == null ? 0 : Integer.toString(currentBoard[j][i].getId() % 10));
       }
       System.out.println();
     }

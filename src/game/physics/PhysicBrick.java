@@ -240,11 +240,11 @@ public class PhysicBrick {
   }
   
   ///FIELDS
-  protected Coordinates coordinates;
-  protected ArrayList<Coordinates> coordinatesForFallingTest;
-  protected ArrayList<Coordinates> coordinatesForLeftCollidingTest;
-  protected ArrayList<Coordinates> coordinatesForRightCollidingTest;
-  protected ArrayList<Mask> masks;
-  protected short currentMaskIndex;
+  private Coordinates coordinates;
+  private ArrayList<Coordinates> coordinatesForFallingTest;
+  private ArrayList<Coordinates> coordinatesForLeftCollidingTest;
+  private ArrayList<Coordinates> coordinatesForRightCollidingTest;
+  private ArrayList<Mask> masks;
+  private short currentMaskIndex;
 
 }

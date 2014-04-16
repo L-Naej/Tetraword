@@ -26,6 +26,7 @@ public class PhysicSolver implements IPhysicSolver{
     currentBrick = null;
     listeners = new ArrayList<>();
     directionAsked = Direction.DOWN;
+    flipTheBrick = false;
     brickJustEnteredTheBoard = true;
   }
   
@@ -57,12 +58,14 @@ public class PhysicSolver implements IPhysicSolver{
     Coordinates brickCoordinates = currentBrick.getCoordinates();
     
     //Clean the last location of the brick
-    for (int i = 0; i < Mask.MASK_HEIGHT; ++i) {
-      for (int j = 0; j < Mask.MASK_WIDTH; ++j) {
-        if (mask.mask[j][i] && brickCoordinates.y - i != GameBoard.BOARD_HEIGHT && brickCoordinates.x + j >= 0 && brickCoordinates.y - i >= 0) {
-          board[brickCoordinates.x + j][brickCoordinates.y - i] = null;
-        }
-      }
+    cleanBrickLocation(mask, brickCoordinates);
+    
+    if (flipTheBrick) {
+      currentBrick.getPhysic().flip();
+      //Update mask
+      mask = currentBrick.getPhysic().getCurrentMask();
+      flipTheBrick = false;
+      cleanBrickLocation(mask, brickCoordinates);
     }
     
     boolean brickTouchedGround = false;
@@ -87,7 +90,8 @@ public class PhysicSolver implements IPhysicSolver{
     //Update position of the brick
     for (int i = 0; i < Mask.MASK_HEIGHT; ++i) {
       for (int j = 0; j < Mask.MASK_WIDTH; ++j) {
-        if (mask.mask[j][i] && brickCoordinates.x + j >= 0 && brickCoordinates.y - i >= 0) {
+        Coordinates finalCoordinates = new Coordinates(brickCoordinates.x + j, brickCoordinates.y - i);
+        if (mask.mask[j][i] && isCoordinateInsideBoard(finalCoordinates)) {
           board[brickCoordinates.x + j][brickCoordinates.y - i] = currentBrick;
         }
       }
@@ -115,7 +119,24 @@ public class PhysicSolver implements IPhysicSolver{
   public boolean tryToFlipBrick() {
     //Test if the brick can actually flip
     //TODO
-    currentBrick.getPhysic().flip();
+    Mask flippedBrick = currentBrick.getPhysic().getNextFlip();
+    Coordinates brickCoordinates = currentBrick.getCoordinates();
+    for (int i = 0; i < Mask.MASK_WIDTH; ++i) {
+      for (int j = 0; j < Mask.MASK_HEIGHT; ++j) {
+        Coordinates finalCoordinates = new Coordinates(brickCoordinates.x + i, brickCoordinates.y - j);
+        if (! flippedBrick.mask[i][j]) {
+          continue;
+        }
+        
+        if ( !isCoordinateInsideBoard(finalCoordinates))
+          return false;
+        Brick cellToTest = board[brickCoordinates.x + i][brickCoordinates.y - j];
+        if (cellToTest != null && cellToTest.getId() != currentBrick.getId()) {
+          return false;
+        }
+      }
+    }
+    flipTheBrick = true;
     return true;
   }
   
@@ -126,7 +147,8 @@ public class PhysicSolver implements IPhysicSolver{
     
     for (Coordinates coord : coordToTest) {
       int yUnderMe = brickCoordinates.y - coord.y - 1;
-      if (yUnderMe >= 0 &&  board[brickCoordinates.x + coord.x][yUnderMe] != null)
+      Coordinates finalCoordinates = new Coordinates(brickCoordinates.x + coord.x, yUnderMe);
+      if (isCoordinateInsideBoard(finalCoordinates) && yUnderMe >= 0 &&  board[brickCoordinates.x + coord.x][yUnderMe] != null)
         return false;
       else if (yUnderMe < 0)
         return false;
@@ -140,7 +162,8 @@ public class PhysicSolver implements IPhysicSolver{
     
     for (Coordinates coord : coordToTest) {
       int xLeftToMe = brickCoordinates.x + coord.x - 1;
-      if (xLeftToMe >= 0 && board[xLeftToMe][brickCoordinates.y - coord.y] != null)
+      Coordinates finalCoordinates = new Coordinates(xLeftToMe, brickCoordinates.y - coord.y);
+      if (isCoordinateInsideBoard(finalCoordinates) && xLeftToMe >= 0 && board[xLeftToMe][brickCoordinates.y - coord.y] != null)
         return false;
       else if (xLeftToMe < 0)
         return false;
@@ -166,11 +189,37 @@ public class PhysicSolver implements IPhysicSolver{
     return true;
   }
   
+  /**
+   * Clean the last place of the brick on the board.
+   * See it like a glClear in OpenGL.
+   */
+  private void cleanBrickLocation(Mask mask, Coordinates brickCoordinates) {
+    for (int i = 0; i < Mask.MASK_HEIGHT; ++i) {
+      for (int j = 0; j < Mask.MASK_WIDTH; ++j) {
+        Coordinates finalCoordinates = new Coordinates(brickCoordinates.x + j, brickCoordinates.y - i);
+        if (mask.mask[j][i] && isCoordinateInsideBoard(finalCoordinates)) {
+          board[brickCoordinates.x + j][brickCoordinates.y - i] = null;
+        }
+      }
+    }
+  }
+  
+  private boolean isCoordinateInsideBoard(Coordinates coordToTest) {
+    if ( coordToTest.y == GameBoard.BOARD_HEIGHT 
+    || coordToTest.x < 0 
+    || coordToTest.x == GameBoard.BOARD_WIDTH
+    || coordToTest.y < 0)
+      return false;
+    
+    return true;
+  }
+  
   ///FIELDS
   private Brick currentBrick;
   private Brick[][] board;
-  ArrayList<IPhysicEventListener> listeners;
-  Direction directionAsked;
+  private ArrayList<IPhysicEventListener> listeners;
+  private Direction directionAsked;
+  private boolean flipTheBrick;
   private boolean brickJustEnteredTheBoard;
 
 }

@@ -11,7 +11,6 @@ import game.utils.Direction;
  * The generic representation of the board.
  * Contains informations used by physics, gameplay and graphics
  * modules of the game.
- * This is a purely data class and it does no computation.
  *
  */
 public class GameBoard implements UserEventsListener, IPhysicEventListener {
@@ -50,6 +49,7 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
       physic.tryToMove(Direction.RIGHT);
     else
       physic.tryToMove(Direction.DOWN);
+    physic.tryToFlipBrick();
     physic.resolvePhysic();
   }
   

@@ -2,9 +2,7 @@ package game;
 
 import java.util.Random;
 
-import game.utils.Coordinates;
-
-public class BrickFactory {
+public class BrickFactory implements IBrickFactory {
 
   public static final int BRICK_TYPE_COUNT = BrickType.class.getEnumConstants().length;
   
@@ -16,7 +14,7 @@ public class BrickFactory {
   }
   
   public Brick createNextBrick() {
-    Brick nextBrick = new Brick(++currentId, nextBrickType, new Coordinates(GameBoard.BOARD_WIDTH / 2, GameBoard.BOARD_HEIGHT - 1));
+    Brick nextBrick = new Brick(++currentId, nextBrickType, GameBoard.ENTER_COORDINATES());
     generateNextBrick();
     return nextBrick;
   }

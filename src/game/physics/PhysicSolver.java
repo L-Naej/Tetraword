@@ -98,6 +98,11 @@ public class PhysicSolver implements IPhysicSolver{
     }
     
     if (brickTouchedGround) {
+      ArrayList<Integer> linesCompleted = checkLinesCompleted(currentBrick);
+      for (IPhysicEventListener listener : listeners) {
+        for (Integer completedLine : linesCompleted)
+          listener.onLineCompleted(completedLine);
+      }
       for (IPhysicEventListener listener : listeners)
         listener.onBrickTouchsGround();
     }
@@ -111,14 +116,12 @@ public class PhysicSolver implements IPhysicSolver{
   
   @Override
   public void tryToMove(Direction direction) {
-    //TODO
     directionAsked = direction;
   }
 
   @Override
   public boolean tryToFlipBrick() {
     //Test if the brick can actually flip
-    //TODO
     Mask flippedBrick = currentBrick.getPhysic().getNextFlip();
     Coordinates brickCoordinates = currentBrick.getCoordinates();
     for (int i = 0; i < Mask.MASK_WIDTH; ++i) {
@@ -205,13 +208,44 @@ public class PhysicSolver implements IPhysicSolver{
   }
   
   private boolean isCoordinateInsideBoard(Coordinates coordToTest) {
-    if ( coordToTest.y == GameBoard.BOARD_HEIGHT 
+    if ( coordToTest.y >= GameBoard.BOARD_HEIGHT 
     || coordToTest.x < 0 
-    || coordToTest.x == GameBoard.BOARD_WIDTH
+    || coordToTest.x >= GameBoard.BOARD_WIDTH
     || coordToTest.y < 0)
       return false;
     
     return true;
+  }
+  
+  /**
+   * Check if there are lines in the game board which are completed.
+   * @param lastBrick the last brick which touched the ground
+   * @return an array containing the complete lines indices, may be
+   * empty if no line is completed.
+   */
+  private ArrayList<Integer> checkLinesCompleted(Brick lastBrick) {
+    Coordinates coord = lastBrick.getCoordinates();
+    ArrayList<Integer> linesCompleted = new ArrayList<>();
+    Mask brickMask = lastBrick.getPhysic().getCurrentMask();
+    for (int i = 0; i < Mask.MASK_HEIGHT; ++i) {
+      for (int j = 0; j < Mask.MASK_WIDTH; ++j) {
+        int localX = coord.x + j, localY = coord.y - i;
+        Coordinates finalCoordinates = new Coordinates(localX, localY);
+        if ( !brickMask.mask[j][i] || ! isCoordinateInsideBoard(finalCoordinates)) 
+          continue;
+        
+        //Check the current line
+        int widthIndex = 0;
+        while (widthIndex < GameBoard.BOARD_WIDTH && board[widthIndex][localY] != null) {
+          ++widthIndex;
+        }
+        if (widthIndex == GameBoard.BOARD_WIDTH)
+          linesCompleted.add(localY);
+        break;
+      }
+    }
+    
+    return linesCompleted;
   }
   
   ///FIELDS

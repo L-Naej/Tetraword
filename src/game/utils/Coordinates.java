@@ -46,4 +46,9 @@ public class Coordinates {
   public Coordinates bottom() {
     return new Coordinates(x, y-1);
   }
+  
+  @Override
+  public Object clone() {
+    return new Coordinates(x, y);
+  }
 }

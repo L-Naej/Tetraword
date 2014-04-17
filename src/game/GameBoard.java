@@ -3,6 +3,7 @@ package game;
 import game.physics.IPhysicEventListener;
 import game.physics.IPhysicSolver;
 import game.physics.PhysicSolver;
+import game.utils.Coordinates;
 import game.utils.Direction;
 
 /**
@@ -17,13 +18,17 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
   
   public static final short BOARD_WIDTH = 10;
   public static final short BOARD_HEIGHT = 22;
+  public static Coordinates ENTER_COORDINATES() {
+    return new Coordinates(GameBoard.BOARD_WIDTH / 2 - 2, GameBoard.BOARD_HEIGHT - 1);
+  }
   
   public GameBoard() {
     boardRepresentation = new Brick[BOARD_WIDTH][BOARD_HEIGHT];
     physic = new PhysicSolver(boardRepresentation);
     physic.addPhysicEventListener(this);
     
-    brickFactory = new BrickFactory();
+    //brickFactory = new BrickFactory();
+    brickFactory = new DebugBrickFactory();
     currentBrick = null;
 
     for (short i = 0; i < BOARD_WIDTH; ++i)
@@ -36,12 +41,26 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     currentBrick = null;
     currentBrick = brickFactory.createNextBrick();
     physic.insertNewBrick(currentBrick);
+    
     //TEST
-    if (Math.random() < 0.5)
-      physic.tryToFlipBrick();
+    physic.tryToFlipBrick();
+    ++IA;
+    switch (IA) {
+    case 1: 
+      physic.tryToMove(Direction.RIGHT);
+      break;
+    case 2:
+      physic.tryToMove(Direction.LEFT);
+      break;
+    default:
+        physic.tryToMove(Direction.DOWN);
+        break;
+    }
   }
   
+  static int IA = 0;
   public void doTurn() {
+    /*
     double rand = Math.random();
     if (rand < 0.2)
       physic.tryToMove(Direction.LEFT);
@@ -49,7 +68,8 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
       physic.tryToMove(Direction.RIGHT);
     else
       physic.tryToMove(Direction.DOWN);
-    physic.tryToFlipBrick();
+     */
+    
     physic.resolvePhysic();
   }
   
@@ -70,8 +90,7 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
 
   @Override
   public void onLineCompleted(int lineIndex) {
-    // TODO Auto-generated method stub
-    
+    System.out.println("Line " + lineIndex + " completed.");
   }
   
   
@@ -108,7 +127,7 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
   ///FIELDS
   private Brick[][] boardRepresentation;
   private IPhysicSolver physic;
-  private BrickFactory brickFactory;
+  private IBrickFactory brickFactory;
   private Brick currentBrick;
 
 }

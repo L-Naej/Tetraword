@@ -148,6 +148,25 @@ public class PhysicBrick {
     currentMask.mask[maskX][maskY] = false;
     computeCollidingCoordinates();
   }
+  
+  /**
+   * Indicates wether or not the brick has still a physical
+   * existence. If all the brick's cells has been destroyed,
+   * then the brick is "totally destroyed" and this method returns
+   * true.
+   * @return true if the brick has no more living cells.
+   * else return false
+   */
+  public boolean isBrickTotallyDestroyed() {
+    for (int i = 0; i < Mask.MASK_WIDTH; ++i) {
+      for (int j = 0; j < Mask.MASK_HEIGHT; ++j) {
+       if ( getCurrentMask().mask[i][j])
+         return false;
+      }
+    }
+    
+    return true;
+  }
  
   
   /**

@@ -83,21 +83,14 @@ public class PhysicSolver implements IPhysicSolver{
     else if (directionAsked == Direction.RIGHT && tryToMoveRight()) {
       
     }
-    else if (isBrickFalling())
+    else if (isBrickFalling(currentBrick))
       currentBrick.getPhysic().fall();
     else {
       brickTouchedGround = true;
     }
         
-    //Update position of the brick
-    for (int i = 0; i < Mask.MASK_HEIGHT; ++i) {
-      for (int j = 0; j < Mask.MASK_WIDTH; ++j) {
-        Coordinates finalCoordinates = new Coordinates(brickCoordinates.x + j, brickCoordinates.y - i);
-        if (mask.mask[j][i] && isCoordinateInsideBoard(finalCoordinates)) {
-          board[brickCoordinates.x + j][brickCoordinates.y - i] = currentBrick;
-        }
-      }
-    }
+
+    updateBrickPositionOnBoard(currentBrick);
     
     if (brickTouchedGround) {
       ArrayList<Integer> linesCompleted = checkLinesCompleted(currentBrick);
@@ -149,14 +142,14 @@ public class PhysicSolver implements IPhysicSolver{
   }
   
   ///PRIVATE METHODS
-  private boolean isBrickFalling() {
-    ArrayList<Coordinates> coordToTest = currentBrick.getPhysic().getCoordinatesForFallingTest();
-    Coordinates brickCoordinates = currentBrick.getCoordinates();
+  private boolean isBrickFalling(Brick brick) {
+    ArrayList<Coordinates> coordToTest = brick.getPhysic().getCoordinatesForFallingTest();
+    Coordinates brickCoordinates = brick.getCoordinates();
     
     for (Coordinates coord : coordToTest) {
       int yUnderMe = brickCoordinates.y - coord.y - 1;
       Coordinates finalCoordinates = new Coordinates(brickCoordinates.x + coord.x, yUnderMe);
-      if (isCoordinateInsideBoard(finalCoordinates) && yUnderMe >= 0 &&  board[brickCoordinates.x + coord.x][yUnderMe] != null)
+      if (isCoordinateInsideBoard(finalCoordinates) && yUnderMe >= 0 &&  board[finalCoordinates.x][yUnderMe] != null)
         return false;
       else if (yUnderMe < 0)
         return false;
@@ -253,6 +246,10 @@ public class PhysicSolver implements IPhysicSolver{
     return linesCompleted;
   }
   
+  /**
+   * Destroy on the board the line indicated by lineIndex.
+   * @param lineIndex the line to destroy
+   */
   private void destroyLine(int lineIndex) {
     
     for (int i = 0; i < GameBoard.BOARD_WIDTH; ++i) {
@@ -260,8 +257,33 @@ public class PhysicSolver implements IPhysicSolver{
       //Modify brick mask
       brickToModify.getPhysic().modifyMask(new Coordinates(i, lineIndex));
       
-      board[i][lineIndex] = null;
+      if (brickToModify.getPhysic().isBrickTotallyDestroyed())
+        bricksList.remove(brickToModify);
       
+      //Update board
+      board[i][lineIndex] = null;
+    }
+    
+    //Do gravity
+    for (Brick brick : bricksList) {
+      if (isBrickFalling(brick)) {
+        cleanBrickLocation(brick.getPhysic().getCurrentMask(), brick.getCoordinates());
+        brick.getPhysic().fall();
+        updateBrickPositionOnBoard(brick);
+      }
+    }
+  }
+  
+  private void updateBrickPositionOnBoard(Brick brick) {
+    Coordinates brickCoordinates = brick.getCoordinates();
+    Mask mask = brick.getPhysic().getCurrentMask();
+    for (int i = 0; i < Mask.MASK_HEIGHT; ++i) {
+      for (int j = 0; j < Mask.MASK_WIDTH; ++j) {
+        Coordinates finalCoordinates = new Coordinates(brickCoordinates.x + j, brickCoordinates.y - i);
+        if (mask.mask[j][i] && isCoordinateInsideBoard(finalCoordinates)) {
+          board[brickCoordinates.x + j][brickCoordinates.y - i] = currentBrick;
+        }
+      }
     }
   }
   

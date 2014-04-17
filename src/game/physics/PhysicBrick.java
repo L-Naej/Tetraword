@@ -131,6 +131,22 @@ public class PhysicBrick {
     //Recompute physic
     computeCollidingCoordinates();
   }
+  
+  /**
+   * Delete (mark 'false') the mask flag corresponding to the
+   * piece of the brick which is at the 'boardCoordinates' coordinates.
+   * @param boardCoordinates coordinates of the board where the 
+   * brick's cell to delete is. 
+   * WARNING: Do not check if coordinates are valid.
+   */
+  public void modifyMask(Coordinates boardCoordinates) {
+    Mask currentMask = masks.get(currentMaskIndex);
+    
+    int maskX = boardCoordinates.x - coordinates.x;
+    int maskY = coordinates.y - boardCoordinates.y;
+    
+    currentMask.mask[maskX][maskY] = false;
+  }
  
   
   /**

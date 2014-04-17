@@ -24,6 +24,7 @@ public class PhysicSolver implements IPhysicSolver{
   public PhysicSolver(Brick[][] board) {
     this.board = board;
     currentBrick = null;
+    bricksList = new ArrayList<>();
     listeners = new ArrayList<>();
     directionAsked = Direction.DOWN;
     flipTheBrick = false;
@@ -49,6 +50,7 @@ public class PhysicSolver implements IPhysicSolver{
       }
     }
     currentBrick = brick;
+    bricksList.add(brick);
     brickJustEnteredTheBoard = true;
   }
   
@@ -99,6 +101,9 @@ public class PhysicSolver implements IPhysicSolver{
     
     if (brickTouchedGround) {
       ArrayList<Integer> linesCompleted = checkLinesCompleted(currentBrick);
+      for (Integer completedLine : linesCompleted)
+        destroyLine(completedLine);
+      
       for (IPhysicEventListener listener : listeners) {
         for (Integer completedLine : linesCompleted)
           listener.onLineCompleted(completedLine);
@@ -248,8 +253,21 @@ public class PhysicSolver implements IPhysicSolver{
     return linesCompleted;
   }
   
+  private void destroyLine(int lineIndex) {
+    
+    for (int i = 0; i < GameBoard.BOARD_WIDTH; ++i) {
+      Brick brickToModify = board[i][lineIndex];
+      //Modify brick mask
+      brickToModify.getPhysic().modifyMask(new Coordinates(i, lineIndex));
+      
+      board[i][lineIndex] = null;
+      
+    }
+  }
+  
   ///FIELDS
   private Brick currentBrick;
+  private ArrayList<Brick> bricksList;
   private Brick[][] board;
   private ArrayList<IPhysicEventListener> listeners;
   private Direction directionAsked;

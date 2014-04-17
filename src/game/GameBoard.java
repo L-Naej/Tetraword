@@ -54,6 +54,7 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
       break;
     default:
         physic.tryToMove(Direction.DOWN);
+        IA = 0;
         break;
     }
   }

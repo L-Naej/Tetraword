@@ -146,6 +146,7 @@ public class PhysicBrick {
     int maskY = coordinates.y - boardCoordinates.y;
     
     currentMask.mask[maskX][maskY] = false;
+    computeCollidingCoordinates();
   }
  
   

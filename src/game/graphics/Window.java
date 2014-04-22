@@ -25,7 +25,7 @@ public class Window extends JFrame{
 	        panel.setOpaque(true);
 			
 			//background
-			image = new ImageIcon(getClass().getResource("../images/background.jpg"));
+			image = new ImageIcon(getClass().getResource("../../img/background.jpg"));
 	        background = new JLabel(image);
 	        panel.add(background);
 	        

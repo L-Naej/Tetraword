@@ -1,9 +1,6 @@
 package game.physics;
 
 import java.util.ArrayList;
-
-
-
 import game.Brick;
 import game.GameBoard;
 import game.physics.PhysicBrick.Mask;
@@ -21,6 +18,12 @@ import game.utils.Direction;
  */
 public class PhysicSolver implements IPhysicSolver{
   
+  /**
+   * The turn duration is the time needed to
+   * a brick to fall.
+   */
+  public static final long TURN_DURATION_MS = 500;
+  
   public PhysicSolver(Brick[][] board) {
     this.board = board;
     currentBrick = null;
@@ -29,6 +32,7 @@ public class PhysicSolver implements IPhysicSolver{
     directionAsked = Direction.DOWN;
     flipTheBrick = false;
     brickJustEnteredTheBoard = true;
+    lastTime = System.currentTimeMillis();
   }
   
   @Override
@@ -56,6 +60,8 @@ public class PhysicSolver implements IPhysicSolver{
   
   @Override
   public void resolvePhysic() {
+    long elapsedTime = System.currentTimeMillis() - lastTime;
+    
     Mask mask = currentBrick.getPhysic().getCurrentMask();
     Coordinates brickCoordinates = currentBrick.getCoordinates();
     
@@ -83,9 +89,11 @@ public class PhysicSolver implements IPhysicSolver{
     else if (directionAsked == Direction.RIGHT && tryToMoveRight()) {
       
     }
-    else if (isBrickFalling(currentBrick))
+    else if (elapsedTime >= TURN_DURATION_MS && isBrickFalling(currentBrick)) {
       currentBrick.getPhysic().fall();
-    else {
+      lastTime = System.currentTimeMillis();
+    }
+    else if (elapsedTime >= TURN_DURATION_MS){
       brickTouchedGround = true;
     }
         
@@ -141,7 +149,8 @@ public class PhysicSolver implements IPhysicSolver{
     return true;
   }
   
-  ///PRIVATE METHODS
+  ///________________PRIVATE METHODS_____________________________
+  ///
   private boolean isBrickFalling(Brick brick) {
     ArrayList<Coordinates> coordToTest = brick.getPhysic().getCoordinatesForFallingTest();
     Coordinates brickCoordinates = brick.getCoordinates();
@@ -295,5 +304,6 @@ public class PhysicSolver implements IPhysicSolver{
   private Direction directionAsked;
   private boolean flipTheBrick;
   private boolean brickJustEnteredTheBoard;
+  private long lastTime;
 
 }

@@ -29,30 +29,20 @@ public class Tetraword {
   public void startGame() {
     System.out.println("Start new game");
     
-    while (! gameFinished()) {
-     doTurn();
-     render();//DEBUG METHOD
-     try {
-       Thread.sleep(100);
-     } catch (InterruptedException e) {
-       // TODO Auto-generated catch block
-       e.printStackTrace();
-     }
+    while (! board.isBoardFull()) {
+      board.doTurn();
+      render();//DEBUG METHOD
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
     
   }
   
-  public void doTurn() {
-  
-    //analyseInputs();
-    board.doTurn();
-  }
-  
   ///PRIVATE METHODS
-  
-  private boolean gameFinished() {
-    return false;
-  }
   
   private void render() {
     Brick currentBoard[][] = board.getBoard();
@@ -72,7 +62,7 @@ public class Tetraword {
     System.out.println("----------------------------------------------");
   }
   
-  ///FIELDS
+  ///PRIVATE FIELDS
   private GameBoard board;
 
 }

@@ -27,6 +27,12 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     physic = new PhysicSolver(boardRepresentation);
     physic.addPhysicEventListener(this);
     
+    score = new Score();
+    
+    paused = false;
+    needNewBrick = false;
+    boardFull = false;
+    
     //brickFactory = new BrickFactory();
     brickFactory = new DebugBrickFactory();
     currentBrick = null;
@@ -59,17 +65,15 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     }
   }
   
-  static int IA = 0;
+  static int IA = 0;//DEBUG REMOVE ME
   public void doTurn() {
-    /*
-    double rand = Math.random();
-    if (rand < 0.2)
-      physic.tryToMove(Direction.LEFT);
-    else if (rand >= 0.2 && rand < 0.5)
-      physic.tryToMove(Direction.RIGHT);
-    else
-      physic.tryToMove(Direction.DOWN);
-     */
+    if (paused || boardFull)
+      return;
+    
+    if (needNewBrick) {
+      insertNewBrick();
+      needNewBrick = false;
+    }
     
     physic.resolvePhysic();
   }
@@ -78,57 +82,67 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     return boardRepresentation;
   }
   
+  public int getScore() {
+    return score.getScore();
+  }
+  
+  public boolean isBoardFull() {
+    return boardFull;
+  }
+  
   @Override
   public void onBrickTouchsGround() {
-    insertNewBrick();
+    needNewBrick = true;
   }
 
   @Override
   public void onBoardFull() {
     System.out.println("GAME FINISHED");
-    System.exit(0);
+    System.out.println("Score: " + score.getScore());
+    boardFull = true;
   }
 
   @Override
   public void onLineCompleted(int lineIndex) {
     System.out.println("Line " + lineIndex + " completed.");
+    score.lineCompleted();
   }
   
   
   @Override
   public void moveBrickLeft() {
-    // TODO Auto-generated method stub
-    
+    physic.tryToMove(Direction.LEFT);
   }
 
   @Override
   public void moveBrickRight() {
-    // TODO Auto-generated method stub
-    
+    physic.tryToMove(Direction.RIGHT);
   }
 
   @Override
   public void moveBrickDown() {
-    // TODO Auto-generated method stub
-    
+    physic.tryToMove(Direction.DOWN);
   }
 
   @Override
   public void flipBrick() {
-    // TODO Auto-generated method stub
-    
+    physic.tryToFlipBrick();
   }
 
   @Override
   public void pause() {
-    // TODO Auto-generated method stub
+    paused = !paused;
     
   }
   
-  ///FIELDS
+  ///PRIVATE FIELDS
   private Brick[][] boardRepresentation;
   private IPhysicSolver physic;
   private IBrickFactory brickFactory;
   private Brick currentBrick;
+  private boolean paused;
+  private Score score;
+  private boolean needNewBrick;
+  private boolean boardFull;
 
 }

@@ -1,9 +1,7 @@
 package game.graphics;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 
 import javax.swing.*;
 
@@ -24,7 +22,8 @@ public class Window extends JFrame{
 	        panel.setOpaque(true);
 			
 			//background
-			image = new ImageIcon(getClass().getResource("../../img/background.jpg"));
+	    Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
+			image = new ImageIcon(backgroundPath.toString());
 	        background = new JLabel(image);
 	        panel.add(background);
 	        

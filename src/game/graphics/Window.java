@@ -1,5 +1,8 @@
 package game.graphics;
 
+import game.GameBoard;
+import game.inputs.InputsUserEvent;
+
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
@@ -42,7 +45,10 @@ public class Window extends JFrame{
 	
 		//test
 		public static void main(String args[]) {
-			new Window();
+			GameBoard board = new GameBoard();
+			Window window = new Window();
+			InputsUserEvent inputs = new InputsUserEvent(board);
+			window.addKeyListener(inputs);
 
 		}
 

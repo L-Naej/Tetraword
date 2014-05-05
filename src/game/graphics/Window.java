@@ -17,13 +17,17 @@ public class Window extends JFrame{
 		private JLabel background;
 
 	
-		public Window(){
+		public Window(GameBoard board){
 		 	
-
+			setLayout(null);
 			//new panel
 	        panel = new JPanel();
 	        panel.setOpaque(true);
-			
+	        interfacePanel = new InterfacePanel(board);
+	        this.add(interfacePanel);
+	        //Positionner les pannels etc
+	        //boardPanel = new BoardPanel(board);
+	        
 			//background
 	    Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
 			image = new ImageIcon(backgroundPath.toString());
@@ -46,10 +50,13 @@ public class Window extends JFrame{
 		//test
 		public static void main(String args[]) {
 			GameBoard board = new GameBoard();
-			Window window = new Window();
+			Window window = new Window(board);
 			InputsUserEvent inputs = new InputsUserEvent(board);
 			window.addKeyListener(inputs);
 
 		}
+		
+		private InterfacePanel interfacePanel;
+		//private BoardPanel boardPanel;
 
 }

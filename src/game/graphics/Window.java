@@ -3,6 +3,9 @@ package game.graphics;
 import game.GameBoard;
 import game.inputs.InputsUserEvent;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
@@ -44,16 +47,33 @@ public class Window extends JFrame{
 	        setVisible(true);
 			add(panel);
 		}
+
+		@Override
+		public void paint(Graphics g){
+			super.paint(g);
+			Graphics2D g2d = (Graphics2D) g;
+		    //caca
+			Path BluePath = FileSystems.getDefault().getPath("bricks", "blue.jpg");
+			Image img = getToolkit().getImage(BluePath.toString());
+			g2d.drawImage(img, 100, 100, null);
+		}
 		
 
 	
 		//test
-		public static void main(String args[]) {
+		public static void main(String args[]) throws InterruptedException {
 			GameBoard board = new GameBoard();
 			Window window = new Window(board);
 			InputsUserEvent inputs = new InputsUserEvent(board);
 			window.addKeyListener(inputs);
-
+			do{
+				window.repaint();
+				Thread.sleep(3000);
+			}
+			
+			while(true);
+			// boucle pr parcourir la gameboard
+			// rafraichir la fenetre souvent: bouclerepaint 30/s
 		}
 		
 		private InterfacePanel interfacePanel;

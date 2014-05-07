@@ -11,10 +11,12 @@ import javax.swing.JPanel;
 
 public class InterfacePanel extends JPanel {
 
+	private static final long serialVersionUID = -8239328550859681658L;
+
 	public InterfacePanel(GameBoard board){
 		this.board = board;
 		setSize(new Dimension (300,300));
-		setOpaque(false);
+		setOpaque(true);
 	}
 	
 	@Override

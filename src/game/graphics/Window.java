@@ -13,15 +13,15 @@ import javax.swing.*;
 
 
 public class Window extends JFrame{
-	
+
 	    private static final long serialVersionUID = 1L;
 		private JPanel panel; 
 		private ImageIcon image;
 		private JLabel background;
 
-	
+
 		public Window(GameBoard board){
-		 	
+
 			setLayout(null);
 			//new panel
 	        panel = new JPanel();
@@ -30,13 +30,13 @@ public class Window extends JFrame{
 	        this.add(interfacePanel);
 	        //Positionner les pannels etc
 	        //boardPanel = new BoardPanel(board);
-	        
+
 			//background
 	    Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
 			image = new ImageIcon(backgroundPath.toString());
 	        background = new JLabel(image);
 	        panel.add(background);
-	        
+
 	        //window
 	        setTitle("TetraWord"); // title     
 	        setDefaultCloseOperation(EXIT_ON_CLOSE); // close application
@@ -57,9 +57,9 @@ public class Window extends JFrame{
 			Image img = getToolkit().getImage(BluePath.toString());
 			g2d.drawImage(img, 100, 100, null);
 		}
-		
 
-	
+
+
 		//test
 		public static void main(String args[]) throws InterruptedException {
 			GameBoard board = new GameBoard();
@@ -70,12 +70,12 @@ public class Window extends JFrame{
 				window.repaint();
 				Thread.sleep(3000);
 			}
-			
+
 			while(true);
 			// boucle pr parcourir la gameboard
 			// rafraichir la fenetre souvent: bouclerepaint 30/s
 		}
-		
+
 		private InterfacePanel interfacePanel;
 		//private BoardPanel boardPanel;
 

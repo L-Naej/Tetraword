@@ -82,12 +82,13 @@ public class Window extends JFrame{
 			public void paint(Graphics g) {
 				super.paint(g);
 				g.drawImage(fond, 0, 0, null);
-				g.drawImage(MagentaBrick, 100, 100, null);
-				g.drawImage(BlueBrick, 130, 100, null);
-				g.drawImage(YellowBrick, 160, 100, null);
-				g.drawImage(GreenBrick, 190, 100, null);
-				g.drawImage(OrangeBrick, 220, 100, null);
-				g.drawImage(CyanBrick, 250, 100, null);
+				g.drawImage(MagentaBrick, 363, 111, null);
+				g.drawImage(BlueBrick, 393, 111, null);
+				g.drawImage(YellowBrick, 423, 111, null);
+				g.drawImage(GreenBrick, 453, 111, null);
+				g.drawImage(OrangeBrick, 483, 111, null);
+				g.drawImage(CyanBrick, 513, 111, null);
+				g.drawImage(RedBrick, 543, 111, null);
 				
 				/*for(int x = 0; x < 20; x++) {
 					for(int y = 0; y < 10; y++) {

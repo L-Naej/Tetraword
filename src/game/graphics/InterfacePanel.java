@@ -15,16 +15,18 @@ public class InterfacePanel extends JPanel {
 
 	public InterfacePanel(GameBoard board){
 		this.board = board;
-		setSize(new Dimension (300,300));
-		setOpaque(true);
+
+		setSize(new Dimension (1024,700)); //default size
+		setOpaque(false);
+
 	}
 	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.RED);
-		g2d.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		//g2d.setColor(Color.RED);
+		//g2d.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		
 	}
 	

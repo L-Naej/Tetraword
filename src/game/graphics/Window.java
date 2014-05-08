@@ -26,16 +26,17 @@ public class Window extends JFrame{
 			//new panel
 	        panel = new JPanel();
 	        panel.setOpaque(true);
-	        interfacePanel = new InterfacePanel(board);
-	        this.add(interfacePanel);
-	        //Positionner les pannels etc
-	        //boardPanel = new BoardPanel(board);
+	        panel.setBounds(0,-20,1024,700);
+
 
 			//background
-	    Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
+	        Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
 			image = new ImageIcon(backgroundPath.toString());
 	        background = new JLabel(image);
 	        panel.add(background);
+	       
+	       
+	
 
 	        //window
 	        setTitle("TetraWord"); // title     
@@ -43,40 +44,41 @@ public class Window extends JFrame{
 	        setLocationRelativeTo(null);
 	        setLocation(150,20); // place
 	        setSize(1024,700); // size
-	        setResizable(true);
+	        setResizable(false);
 	        setVisible(true);
 			add(panel);
-		}
+			}
+		
+			@Override
+			//grid
+			
+			//il faut "paint" les briques ici
+			public void paint(Graphics g) {
+				super.paint(g);
+				GameBoard board = new GameBoard();
+				
+				for(int x = 0; x < 20; x++) {
+					for(int y = 0; y < 10; y++) {
+					}
+				}
+			
+			}
+			
+			
 
-		@Override
-		public void paint(Graphics g){
-			super.paint(g);
-			Graphics2D g2d = (Graphics2D) g;
-		    //caca
-			Path BluePath = FileSystems.getDefault().getPath("bricks", "blue.jpg");
-			Image img = getToolkit().getImage(BluePath.toString());
-			g2d.drawImage(img, 100, 100, null);
-		}
+		
 
+		
 
 
 		//test
 		public static void main(String args[]) throws InterruptedException {
 			GameBoard board = new GameBoard();
+			board.getBoard();
 			Window window = new Window(board);
-			InputsUserEvent inputs = new InputsUserEvent(board);
-			window.addKeyListener(inputs);
-			do{
-				window.repaint();
-				Thread.sleep(3000);
-			}
-
-			while(true);
-			// boucle pr parcourir la gameboard
-			// rafraichir la fenetre souvent: bouclerepaint 30/s
 		}
 
-		private InterfacePanel interfacePanel;
-		//private BoardPanel boardPanel;
+
 
 }
+

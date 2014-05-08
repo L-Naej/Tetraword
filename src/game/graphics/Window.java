@@ -1,5 +1,7 @@
 package game.graphics;
 
+import game.Brick;
+import game.BrickType;
 import game.GameBoard;
 import game.inputs.InputsUserEvent;
 
@@ -16,7 +18,6 @@ public class Window extends JFrame{
 
 	    private static final long serialVersionUID = 1L;
 		private JPanel panel; 
-		private JLabel background;
 		
 		private Image fond;
 		private Image MagentaBrick;
@@ -26,10 +27,12 @@ public class Window extends JFrame{
 		private Image OrangeBrick;
 		private Image RedBrick;
 		private Image GreenBrick;
-
+		private Brick[][] tableau;
 
 
 		public Window(GameBoard board){
+			
+			tableau = board.getBoard();
 
 			setLayout(null);
 			//new panel
@@ -73,14 +76,43 @@ public class Window extends JFrame{
 	        setVisible(true);
 			add(panel);
 			
-			}
+		}
 		
-			@Override
-			//grid
-			//test
-			//il faut "paint" les briques ici
-			public void paint(Graphics g) {
-				super.paint(g);
+		public void BricksPaint(Graphics g, int i, int j, Brick brick ){
+			int x = 0;// placement en X
+			int y = 0;// placement en Y
+			BrickType type = brick.getType(); // on recupe le type de brick
+			switch (type){
+			case  I:  g.drawImage(CyanBrick, x, y, null);
+			break;
+			case  J:  g.drawImage(BlueBrick, x, y, null);
+			break;
+			case  L:  g.drawImage(OrangeBrick, x, y, null);
+			break;
+			case  O:  g.drawImage(YellowBrick, x, y, null);
+			break;
+			case  S:  g.drawImage(GreenBrick, x, y, null);
+			break;
+			case  T:  g.drawImage(MagentaBrick, x, y, null);
+			break;
+			case  Z:  g.drawImage(RedBrick, x, y, null);
+			break;
+			}
+			
+		}
+
+
+
+			public void GridPaint(Graphics g){
+				for(int i = 0; i < 10; i++) {
+					for(int j = 0; j < 20; j++) {
+						if (tableau[i][j].getType()!=null){
+							BricksPaint(g, i , j, tableau[i][j] );
+						}
+							
+				}
+			}
+				//test affichage bricks
 				g.drawImage(fond, 0, 0, null);
 				g.drawImage(MagentaBrick, 363, 111, null);
 				g.drawImage(BlueBrick, 393, 111, null);
@@ -89,13 +121,13 @@ public class Window extends JFrame{
 				g.drawImage(OrangeBrick, 483, 111, null);
 				g.drawImage(CyanBrick, 513, 111, null);
 				g.drawImage(RedBrick, 543, 111, null);
-				
-				/*for(int x = 0; x < 20; x++) {
-					for(int y = 0; y < 10; y++) {
-					}
-				}*/
-				
+			}
 			
+			@Override
+			public void paint(Graphics g) {
+				super.paint(g);
+				GridPaint(g);
+
 			}
 			
 
@@ -105,6 +137,7 @@ public class Window extends JFrame{
 			GameBoard board = new GameBoard();
 			Window window = new Window(board);
 			while(true){
+				//window.setDoubleBuffered(true);   a voir pr le scintillement
 				window.repaint();
 				Thread.sleep(300);
 			}

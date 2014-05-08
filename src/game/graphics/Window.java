@@ -16,8 +16,17 @@ public class Window extends JFrame{
 
 	    private static final long serialVersionUID = 1L;
 		private JPanel panel; 
-		private ImageIcon image;
 		private JLabel background;
+		
+		private Image fond;
+		private Image MagentaBrick;
+		private Image BlueBrick;
+		private Image CyanBrick;
+		private Image YellowBrick;
+		private Image OrangeBrick;
+		private Image RedBrick;
+		private Image GreenBrick;
+
 
 
 		public Window(GameBoard board){
@@ -31,11 +40,27 @@ public class Window extends JFrame{
 
 			//background
 	        Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
-			image = new ImageIcon(backgroundPath.toString());
-	        background = new JLabel(image);
-	        panel.add(background);
+			fond = new ImageIcon(backgroundPath.toString()).getImage();
+	        //background = new JLabel(image);
+	        //panel.add(background);
 	       
-	       
+	        //Bricks Path
+	        Path bluePath = FileSystems.getDefault().getPath("bricks", "blue.jpg");
+	        Path cyanPath = FileSystems.getDefault().getPath("bricks", "cyan.jpg");
+	        Path greenPath = FileSystems.getDefault().getPath("bricks", "green.jpg");
+	        Path magentaPath = FileSystems.getDefault().getPath("bricks", "magenta.jpg");
+	        Path orangePath = FileSystems.getDefault().getPath("bricks", "orange.jpg");
+	        Path redPath = FileSystems.getDefault().getPath("bricks", "red.jpg");
+	        Path yellowPath = FileSystems.getDefault().getPath("bricks", "yellow.jpg");
+	        
+	        //Briks
+			MagentaBrick = new ImageIcon(magentaPath.toString()).getImage();
+			BlueBrick    = new ImageIcon(bluePath.toString()).getImage();
+			CyanBrick    = new ImageIcon(cyanPath.toString()).getImage();
+			YellowBrick  = new ImageIcon(yellowPath.toString()).getImage();
+			OrangeBrick  = new ImageIcon(orangePath.toString()).getImage();
+			RedBrick     = new ImageIcon(redPath.toString()).getImage();
+			GreenBrick   = new ImageIcon(greenPath.toString()).getImage();
 	
 
 	        //window
@@ -47,35 +72,36 @@ public class Window extends JFrame{
 	        setResizable(false);
 	        setVisible(true);
 			add(panel);
+			
 			}
 		
 			@Override
 			//grid
-			
+			//test
 			//il faut "paint" les briques ici
 			public void paint(Graphics g) {
 				super.paint(g);
-				GameBoard board = new GameBoard();
+				g.drawImage(fond, 0, 0, null);
+				g.drawImage(MagentaBrick, 100, 100, null);
 				
-				for(int x = 0; x < 20; x++) {
+				/*for(int x = 0; x < 20; x++) {
 					for(int y = 0; y < 10; y++) {
 					}
-				}
+				}*/
+				
 			
 			}
 			
-			
-
-		
-
-		
 
 
 		//test
 		public static void main(String args[]) throws InterruptedException {
 			GameBoard board = new GameBoard();
-			board.getBoard();
 			Window window = new Window(board);
+			while(true){
+				window.repaint();
+				Thread.sleep(300);
+			}
 		}
 
 

@@ -34,6 +34,7 @@ public class Window extends JFrame{
 			
 			tableau = board.getBoard();
 
+
 			setLayout(null);
 			//new panel
 	        panel = new JPanel();
@@ -104,21 +105,13 @@ public class Window extends JFrame{
 
 
 			public void GridPaint(Graphics g){
+				g.drawImage(fond, 0, 0, null);
 				for(int i = 0; i < 10; i++) {
 					for(int j = 0; j < 20; j++) {
-						if (tableau[i][j].getType()!=null) BricksPaint(g, i , j, tableau[i][j] );
+						if (tableau[i][j]!=null) BricksPaint(g, i , j, tableau[i][j] );
 									
 					}
 				}
-				//test affichage bricks
-				g.drawImage(fond, 0, 0, null);
-				g.drawImage(MagentaBrick, 363, 111, null);
-				g.drawImage(BlueBrick, 393, 111, null);
-				g.drawImage(YellowBrick, 423, 111, null);
-				g.drawImage(GreenBrick, 453, 111, null);
-				g.drawImage(OrangeBrick, 483, 111, null);
-				g.drawImage(CyanBrick, 513, 111, null);
-				g.drawImage(RedBrick, 543, 111, null);
 			}
 			
 			@Override
@@ -133,6 +126,7 @@ public class Window extends JFrame{
 		//test
 		public static void main(String args[]) throws InterruptedException {
 			GameBoard board = new GameBoard();
+			
 			Window window = new Window(board);
 			while(true){
 				//window.setDoubleBuffered(true);   a voir pr le scintillement

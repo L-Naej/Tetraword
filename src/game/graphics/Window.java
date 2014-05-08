@@ -45,13 +45,13 @@ public class Window extends JFrame{
 	        //panel.add(background);
 	       
 	        //Bricks Path
-	        Path bluePath = FileSystems.getDefault().getPath("bricks", "blue.jpg");
-	        Path cyanPath = FileSystems.getDefault().getPath("bricks", "cyan.jpg");
-	        Path greenPath = FileSystems.getDefault().getPath("bricks", "green.jpg");
-	        Path magentaPath = FileSystems.getDefault().getPath("bricks", "magenta.jpg");
-	        Path orangePath = FileSystems.getDefault().getPath("bricks", "orange.jpg");
-	        Path redPath = FileSystems.getDefault().getPath("bricks", "red.jpg");
-	        Path yellowPath = FileSystems.getDefault().getPath("bricks", "yellow.jpg");
+	        Path bluePath = FileSystems.getDefault().getPath("img/bricks", "blue.jpg");
+	        Path cyanPath = FileSystems.getDefault().getPath("img/bricks", "cyan.jpg");
+	        Path greenPath = FileSystems.getDefault().getPath("img/bricks", "green.jpg");
+	        Path magentaPath = FileSystems.getDefault().getPath("img/bricks", "magenta.jpg");
+	        Path orangePath = FileSystems.getDefault().getPath("img/bricks", "orange.jpg");
+	        Path redPath = FileSystems.getDefault().getPath("img/bricks", "red.jpg");
+	        Path yellowPath = FileSystems.getDefault().getPath("img/bricks", "yellow.jpg");
 	        
 	        //Briks
 			MagentaBrick = new ImageIcon(magentaPath.toString()).getImage();
@@ -83,6 +83,11 @@ public class Window extends JFrame{
 				super.paint(g);
 				g.drawImage(fond, 0, 0, null);
 				g.drawImage(MagentaBrick, 100, 100, null);
+				g.drawImage(BlueBrick, 130, 100, null);
+				g.drawImage(YellowBrick, 160, 100, null);
+				g.drawImage(GreenBrick, 190, 100, null);
+				g.drawImage(OrangeBrick, 220, 100, null);
+				g.drawImage(CyanBrick, 250, 100, null);
 				
 				/*for(int x = 0; x < 20; x++) {
 					for(int y = 0; y < 10; y++) {

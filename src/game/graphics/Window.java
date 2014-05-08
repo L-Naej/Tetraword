@@ -11,12 +11,17 @@ import java.awt.Image;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
+import game.GameBoard;
+import game.inputs.InputsUserEvent;
+import javafx.scene.paint.Color;
+
 import javax.swing.*;
 
 
 public class Window extends JFrame{
 
-	    private static final long serialVersionUID = 1L;
+
+		private static final long serialVersionUID = 1L;
 		private JPanel panel; 
 		
 		private Image fond;
@@ -47,6 +52,19 @@ public class Window extends JFrame{
 			fond = new ImageIcon(backgroundPath.toString()).getImage();
 	        //background = new JLabel(image);
 	        //panel.add(background);
+			
+			//affichage score
+	        //int score = board.getScore();
+	        int score = 4000;
+	        String scoreFinal = String.valueOf(score);
+	        JLabel labelScore = new JLabel(scoreFinal);	
+	        labelScore.setLocation(50, 40);
+	        panel.add(labelScore);
+	        labelScore.setLocation(50, 40);
+	        labelScore.setForeground(java.awt.Color.black);
+	        labelScore.setVisible(true);
+	        
+	        //panel.revalidate();
 	       
 	        //Bricks Path
 	        Path bluePath = FileSystems.getDefault().getPath("img/bricks", "blue.jpg");
@@ -77,8 +95,8 @@ public class Window extends JFrame{
 	        setVisible(true);
 			add(panel);
 			
-		}
-		
+		}		
+
 		public void BricksPaint(Graphics g, int i, int j, Brick brick ){
 			int x = 0;// placement en X
 			int y = 0;// placement en Y
@@ -102,8 +120,6 @@ public class Window extends JFrame{
 			
 		}
 
-
-
 			public void GridPaint(Graphics g){
 				g.drawImage(fond, 0, 0, null);
 				for(int i = 0; i < 10; i++) {
@@ -118,11 +134,8 @@ public class Window extends JFrame{
 			public void paint(Graphics g) {
 				super.paint(g);
 				GridPaint(g);
-
 			}
 			
-
-
 		//test
 		public static void main(String args[]) throws InterruptedException {
 			GameBoard board = new GameBoard();
@@ -134,8 +147,5 @@ public class Window extends JFrame{
 				Thread.sleep(300);
 			}
 		}
-
-
-
 }
 

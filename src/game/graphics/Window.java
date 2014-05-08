@@ -13,7 +13,6 @@ import java.nio.file.Path;
 
 import game.GameBoard;
 import game.inputs.InputsUserEvent;
-import javafx.scene.paint.Color;
 
 import javax.swing.*;
 
@@ -139,9 +138,10 @@ public class Window extends JFrame{
 		//test
 		public static void main(String args[]) throws InterruptedException {
 			GameBoard board = new GameBoard();
-			
+			board.insertNewBrick();
 			Window window = new Window(board);
 			while(true){
+			  board.doTurn();
 				//window.setDoubleBuffered(true);   a voir pr le scintillement
 				window.repaint();
 				Thread.sleep(300);

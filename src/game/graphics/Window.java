@@ -106,12 +106,10 @@ public class Window extends JFrame{
 			public void GridPaint(Graphics g){
 				for(int i = 0; i < 10; i++) {
 					for(int j = 0; j < 20; j++) {
-						if (tableau[i][j].getType()!=null){
-							BricksPaint(g, i , j, tableau[i][j] );
-						}
-							
+						if (tableau[i][j].getType()!=null) BricksPaint(g, i , j, tableau[i][j] );
+									
+					}
 				}
-			}
 				//test affichage bricks
 				g.drawImage(fond, 0, 0, null);
 				g.drawImage(MagentaBrick, 363, 111, null);

@@ -100,23 +100,23 @@ public class Window extends JFrame{
 		}		
 
 		public void BricksPaint(Graphics g, int i, int j, Brick brick ){
-			int x = (int)( 364+30*WIDTHTAB/BRICKSIZE*i/10);
-			int y = (int)( 51+HEIGHTTAB/BRICKSIZE*j/20);
+			int x = (int)( 363+30*WIDTHTAB/BRICKSIZE*i/10);
+			int y = (int)( -621+30*HEIGHTTAB/BRICKSIZE*j/20);
 			BrickType type = brick.getType(); // on recupe le type de brick
 			switch (type){
-			case  I:  g.drawImage(CyanBrick, x, y, null);
+			case  I:  g.drawImage(CyanBrick, x, -y, null);
 			break;
-			case  J:  g.drawImage(BlueBrick, x, y, null);
+			case  J:  g.drawImage(BlueBrick, x, -y, null);
 			break;
-			case  L:  g.drawImage(OrangeBrick, x, y, null);
+			case  L:  g.drawImage(OrangeBrick, x, -y, null);
 			break;
-			case  O:  g.drawImage(YellowBrick, x, y, null);
+			case  O:  g.drawImage(YellowBrick, x, -y, null);
 			break;
-			case  S:  g.drawImage(GreenBrick, x, y, null);
+			case  S:  g.drawImage(GreenBrick, x, -y, null);
 			break;
-			case  T:  g.drawImage(MagentaBrick, x, y, null);
+			case  T:  g.drawImage(MagentaBrick, x, -y, null);
 			break;
-			case  Z:  g.drawImage(RedBrick, x, y, null);
+			case  Z:  g.drawImage(RedBrick, x, -y, null);
 			break;
 			}
 			

@@ -32,7 +32,10 @@ public class Window extends JFrame{
 		private Image RedBrick;
 		private Image GreenBrick;
 		private Brick[][] tableau;
-
+		public final int WIDTHTAB = 300;
+		public final int HEIGHTTAB= 600;
+		public final int BRICKSIZE= 30;
+		
 
 		public Window(GameBoard board){
 			
@@ -43,7 +46,7 @@ public class Window extends JFrame{
 			//new panel
 	        panel = new JPanel();
 	        panel.setOpaque(true);
-	        panel.setBounds(0,-20,1024,700);
+	        panel.setBounds(0,20,1024,700);
 
 
 			//background
@@ -97,8 +100,8 @@ public class Window extends JFrame{
 		}		
 
 		public void BricksPaint(Graphics g, int i, int j, Brick brick ){
-			int x = 0;// placement en X
-			int y = 0;// placement en Y
+			int x = (int)( 364+30*WIDTHTAB/BRICKSIZE*i/10);
+			int y = (int)( 51+HEIGHTTAB/BRICKSIZE*j/20);
 			BrickType type = brick.getType(); // on recupe le type de brick
 			switch (type){
 			case  I:  g.drawImage(CyanBrick, x, y, null);
@@ -144,7 +147,7 @@ public class Window extends JFrame{
 			  board.doTurn();
 				//window.setDoubleBuffered(true);   a voir pr le scintillement
 				window.repaint();
-				Thread.sleep(300);
+				Thread.sleep(100);
 			}
 		}
 }

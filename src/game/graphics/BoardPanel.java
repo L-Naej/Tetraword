@@ -78,7 +78,8 @@ public class BoardPanel extends JPanel {
     //We use a BufferedImage to improve performances and avoid flickering
     Graphics2D brickDrawer = (Graphics2D) brickBuffer.getGraphics();
     
-    //Tricky trick to clear the buffer
+    //Tricky trick to clear the buffer, thanks StackOverflow 
+    //http://stackoverflow.com/questions/5672697/java-filling-a-bufferedimage-with-transparent-pixels
     brickDrawer.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
     brickDrawer.fillRect(0,0,brickBuffer.getWidth(),brickBuffer.getHeight());
     brickDrawer.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));

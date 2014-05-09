@@ -3,10 +3,12 @@ package game.graphics;
 import game.GameBoard;
 
 
-import java.awt.Graphics;
+import game.inputs.InputsUserEvent;
 
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 
 
 import javax.swing.*;
@@ -78,6 +80,8 @@ public class Window extends JFrame{
 		public static void main(String args[]) throws InterruptedException {
 			final GameBoard board = new GameBoard();
 			final Window window = new Window(board);
+			InputsUserEvent inputs = new InputsUserEvent(board);
+			window.addKeyListener(inputs);
 			
       SwingUtilities.invokeLater(new Runnable() {
           public void run() {

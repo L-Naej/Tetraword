@@ -1,13 +1,9 @@
 package game.graphics;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-
 import game.GameBoard;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class InterfacePanel extends JPanel {
@@ -19,18 +15,7 @@ public class InterfacePanel extends JPanel {
 	public InterfacePanel(GameBoard board){
 		//score
 		this.board = board;
-		score= (int)(board.getScore());
-
-
-
-	     /* String scoreFinal = String.valueOf(score);
-	      JLabel labelScore = new JLabel(scoreFinal);	
-	      labelScore.setLocation(50, 40);
-	      //panel.add(labelScore);
-	      labelScore.setLocation(50, 40);
-	      labelScore.setForeground(java.awt.Color.white);
-	      labelScore.setVisible(true);*/
-
+		score = (int)(board.getScore());
 	}
 	
 	@Override
@@ -38,10 +23,6 @@ public class InterfacePanel extends JPanel {
 		super.paintComponent(g);
 		g.setColor(Color.WHITE);
         g.drawString(String.valueOf(score), 100, 100);
-
-		
 	}
 	
-
-
 }

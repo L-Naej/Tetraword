@@ -20,6 +20,7 @@ public class Window extends JFrame{
 		private static final long serialVersionUID = 1L;
 		private JPanel panel; 
 		private BoardPanel boardPanel;
+		private InterfacePanel interfaced;
 
 		public Window(GameBoard board){
       
@@ -31,9 +32,13 @@ public class Window extends JFrame{
       
       boardPanel = new BoardPanel(board);
       boardPanel.setBounds(0,0,1024,700);
-      boardPanel.setOpaque(false);
+      boardPanel.setBounds(0,0,1024,700);
       this.add(boardPanel);
-         
+      
+      interfaced = new InterfacePanel(board);
+      interfaced.setBounds(0,0,1024,700);  
+      interfaced.setBounds(0,0,1024,700);
+      this.add(interfaced);
       
        //window
       setTitle("TetraWord"); // title     

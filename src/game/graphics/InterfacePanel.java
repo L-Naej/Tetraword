@@ -14,15 +14,15 @@ public class InterfacePanel extends JPanel {
 
 	private static final long serialVersionUID = -8239328550859681658L;
 	private int score;
-
+	private GameBoard board;
+	
 	public InterfacePanel(GameBoard board){
+		//score
 		this.board = board;
+		score= (int)(board.getScore());
 
-		setSize(new Dimension (1024,700)); //default size
-		setOpaque(true);
-	      //affichage score
-	      //int score = board.getScore();
-	      score = 4000;
+
+
 	     /* String scoreFinal = String.valueOf(score);
 	      JLabel labelScore = new JLabel(scoreFinal);	
 	      labelScore.setLocation(50, 40);
@@ -36,13 +36,12 @@ public class InterfacePanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
 		g.setColor(Color.WHITE);
         g.drawString(String.valueOf(score), 100, 100);
 
 		
 	}
 	
-	private GameBoard board;
+
 
 }

@@ -32,16 +32,6 @@ public class Window extends JFrame{
       boardPanel.setOpaque(false);
       this.add(boardPanel);
          
-      //affichage score
-      //int score = board.getScore();
-      int score = 4000;
-      String scoreFinal = String.valueOf(score);
-      JLabel labelScore = new JLabel(scoreFinal);	
-      labelScore.setLocation(50, 40);
-      //panel.add(labelScore);
-      labelScore.setLocation(50, 40);
-      labelScore.setForeground(java.awt.Color.black);
-      labelScore.setVisible(true);
       
        //window
       setTitle("TetraWord"); // title     
@@ -57,6 +47,8 @@ public class Window extends JFrame{
 			@Override
 			public void paint(Graphics g) {
         super.paint(g);
+
+
 			}
 			
 	

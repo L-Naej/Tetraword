@@ -18,6 +18,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -29,6 +30,7 @@ public class BoardPanel extends JPanel {
   private static final long serialVersionUID = -6673567999209675854L;
   
   private Image fond;
+  private Image help;
   private Image MagentaBrick;
   private Image BlueBrick;
   private Image CyanBrick;
@@ -59,6 +61,10 @@ public class BoardPanel extends JPanel {
     //background
     Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
     fond = new ImageIcon(backgroundPath.toString()).getImage();
+    
+    //help button
+	Path helpPath = FileSystems.getDefault().getPath("img", "helpButton.png");
+	help = new ImageIcon(helpPath.toString()).getImage();
     
     //Bricks and Forms Path
     Path bluePath = FileSystems.getDefault().getPath("img/bricks", "blue.jpg");
@@ -175,6 +181,11 @@ public class BoardPanel extends JPanel {
     	g.setFont(new Font("Arial", Font.BOLD, 30));
     	g.setColor(Color.WHITE);
         g.drawString(String.valueOf(board.getScore()), 810, 500);
+    }
+    
+    public void HelpPaint(Graphics g){
+    	g.setColor(Color.RED);
+    	//g.drawImage(help, 800, 500, observer)
     }
     
     

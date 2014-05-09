@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
+import java.awt.*;
+
 import javax.swing.*;
 
 public class Window extends JFrame{
@@ -23,7 +25,7 @@ public class Window extends JFrame{
 
 		public Window(GameBoard board){
 			
-			//tableau = board.getBoard();
+			tableau = board.getBoard();
 
 			setLayout(null);
 			
@@ -58,13 +60,13 @@ public class Window extends JFrame{
 	        Path yellowPath = FileSystems.getDefault().getPath("img/bricks", "yellow.jpg");
 	        
 	        //Briks
-			//MagentaBrick = new ImageIcon(magentaPath.toString()).getImage();
-			//BlueBrick    = new ImageIcon(bluePath.toString()).getImage();
-			//CyanBrick    = new ImageIcon(cyanPath.toString()).getImage();
-			//ellowBrick  = new ImageIcon(yellowPath.toString()).getImage();
-			//OrangeBrick  = new ImageIcon(orangePath.toString()).getImage();
-			//RedBrick     = new ImageIcon(redPath.toString()).getImage();
-			//GreenBrick   = new ImageIcon(greenPath.toString()).getImage();
+			MagentaBrick = new ImageIcon(magentaPath.toString()).getImage();
+			BlueBrick    = new ImageIcon(bluePath.toString()).getImage();
+			CyanBrick    = new ImageIcon(cyanPath.toString()).getImage();
+			ellowBrick  = new ImageIcon(yellowPath.toString()).getImage();
+			OrangeBrick  = new ImageIcon(orangePath.toString()).getImage();
+			RedBrick     = new ImageIcon(redPath.toString()).getImage();
+			GreenBrick   = new ImageIcon(greenPath.toString()).getImage();
 			
 	        //window
 	        setTitle("TetraWord"); // title     
@@ -82,32 +84,32 @@ public class Window extends JFrame{
 			BrickType nextBrickType = brick.getNextBrickType();
 			switch (nextBrickType){
 				case  I:
-					//g.drawImage(CyanBrick, 800, 100, null);
+					g.drawImage(CyanBrick, 800, 100, null);
 					break;
 				case  J:
-					//g.drawImage(BlueBrick, 800, 100, null);
+					g.drawImage(BlueBrick, 800, 100, null);
 					break;
 				case  L:  
-					//g.drawImage(OrangeBrick, 800, 100, null);
+					g.drawImage(OrangeBrick, 800, 100, null);
 					break;
 				case  O:  
-					//g.drawImage(YellowBrick, 800, 100, null);
+					g.drawImage(YellowBrick, 800, 100, null);
 					break;
 				case  S:  
-					//g.drawImage(GreenBrick, 800, 100, null);
+					g.drawImage(GreenBrick, 800, 100, null);
 					break;
 				case  T:  
-					//g.drawImage(MagentaBrick, 800, 100, null);
+					g.drawImage(MagentaBrick, 800, 100, null);
 					break;
 				case  Z:  
-					//g.drawImage(RedBrick, 800, 100, null);
+					g.drawImage(RedBrick, 800, 100, null);
 					break;
 			}
 		}
-/*
+
 		public void BricksPaint(Graphics g, int i, int j, Brick brick ){
-			//int x = (int)( 363+30*WIDTHTAB/BRICKSIZE*i/10);
-			//int y = (int)( -621+30*HEIGHTTAB/BRICKSIZE*j/20);
+			int x = (int)( 363+30*WIDTHTAB/BRICKSIZE*i/10);
+			int y = (int)( -621+30*HEIGHTTAB/BRICKSIZE*j/20);
 			BrickType type = brick.getType(); // on recupe le type de brick
 			switch (type){
 				case  I:  g.drawImage(CyanBrick, x, -y, null);
@@ -127,8 +129,8 @@ public class Window extends JFrame{
 			}
 			
 		}
-*/
-		/*
+
+		
 		public void GridPaint(Graphics g){
 			g.drawImage(fond, 0, 0, null);
 			for(int i = 0; i < 10; i++) {
@@ -141,7 +143,7 @@ public class Window extends JFrame{
 				}
 			}
 		}
-		*/	
+		
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);

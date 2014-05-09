@@ -83,11 +83,12 @@ public class PhysicSolver implements IPhysicSolver{
     }
     
     boolean brickTouchedGround = false;
-    if (directionAsked == Direction.NO_DIRECTION) {
-      brickSpeed = NORMAL_BRICK_SPEED;
-    }
-    else if (directionAsked == Direction.DOWN) {
+
+    if (directionAsked == Direction.DOWN) {
       brickSpeed = ACCELERATED_BRICK_SPEED;
+    }
+    else {
+      brickSpeed = NORMAL_BRICK_SPEED;
     }
     
     //See if the brick is falling
@@ -119,8 +120,7 @@ public class PhysicSolver implements IPhysicSolver{
         destroyLine(completedLine);
       
       for (IPhysicEventListener listener : listeners) {
-        for (Integer completedLine : linesCompleted)
-          listener.onLineCompleted(completedLine);
+          listener.onLineCompleted(linesCompleted);
       }
       for (IPhysicEventListener listener : listeners)
         listener.onBrickTouchsGround();
@@ -304,7 +304,7 @@ public class PhysicSolver implements IPhysicSolver{
       for (int j = 0; j < Mask.MASK_WIDTH; ++j) {
         Coordinates finalCoordinates = new Coordinates(brickCoordinates.x + j, brickCoordinates.y - i);
         if (mask.mask[j][i] && isCoordinateInsideBoard(finalCoordinates)) {
-          board[brickCoordinates.x + j][brickCoordinates.y - i] = currentBrick;
+          board[brickCoordinates.x + j][brickCoordinates.y - i] = brick;
         }
       }
     }

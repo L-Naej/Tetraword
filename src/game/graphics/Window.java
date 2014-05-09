@@ -18,10 +18,6 @@ public class Window extends JFrame{
 		private static final long serialVersionUID = 1L;
 		private JPanel panel; 
 		private BoardPanel boardPanel;
-		
-		public final int WIDTHTAB = 300;
-		public final int HEIGHTTAB= 600;
-		public final int BRICKSIZE= 30;
 
 		public Window(GameBoard board){
       
@@ -64,24 +60,32 @@ public class Window extends JFrame{
 			}
 			
 	
-		//test
-		public static void main(String args[]) throws InterruptedException {
-			GameBoard board = new GameBoard();
-			board.insertNewBrick();
-			final Window window = new Window(board);
-			Timer timer = new Timer(25, new ActionListener() {
-		    public void actionPerformed(ActionEvent evt) {
-		        window.repaint();
-		    }
-		});
-		timer.setRepeats(true);
-		timer.setCoalesce(true);
-		timer.start();
-		
-			while(true){
-			  board.doTurn();
-				Thread.sleep(100);
-			}
+		private static void createAndShowGUI(final GameBoard board, final Window window) {
+      
+      Timer timer = new Timer(25, new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+            board.doTurn();
+            window.repaint();
+        }
+      });
+      timer.setRepeats(true);
+      timer.setCoalesce(true);
+      timer.start();
+      board.insertNewBrick();
 		}
+		
+		
+		public static void main(String args[]) throws InterruptedException {
+			final GameBoard board = new GameBoard();
+			final Window window = new Window(board);
+			
+      SwingUtilities.invokeLater(new Runnable() {
+          public void run() {
+              createAndShowGUI(board, window);
+          }
+      });
+
+		}
+		
 }
 

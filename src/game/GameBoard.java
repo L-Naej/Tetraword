@@ -33,8 +33,8 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     needNewBrick = false;
     boardFull = false;
     
-    //brickFactory = new BrickFactory();
-    brickFactory = new DebugBrickFactory();
+    brickFactory = new BrickFactory();
+    //brickFactory = new DebugBrickFactory();
     currentBrick = null;
 
     for (short i = 0; i < BOARD_WIDTH; ++i)
@@ -51,25 +51,8 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     currentBrick = null;
     currentBrick = brickFactory.createNextBrick();
     physic.insertNewBrick(currentBrick);
-    
-    //TEST
-    physic.tryToFlipBrick();
-    ++IA;
-    switch (IA) {
-    case 1: 
-      physic.tryToMove(Direction.RIGHT);
-      break;
-    case 2:
-      physic.tryToMove(Direction.LEFT);
-      break;
-    default:
-        physic.tryToMove(Direction.DOWN);
-        IA = 0;
-        break;
-    }
   }
   
-  static int IA = 0;//DEBUG REMOVE ME
   public void doTurn() {
     if (paused || boardFull)
       return;

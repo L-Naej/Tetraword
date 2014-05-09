@@ -15,7 +15,6 @@ public class InputsUserEvent implements KeyListener {
 	    
 	    switch (event.getKeyCode()) {
 	    	case KeyEvent.VK_DOWN:
-	    		System.out.println("Fleche bas pressée");
 	    		listener.moveBrickDown();
 	    		break;
 	    	case KeyEvent.VK_LEFT:
@@ -25,7 +24,7 @@ public class InputsUserEvent implements KeyListener {
 	    		listener.moveBrickRight();
 	    		break;
 	    	
-	    	case KeyEvent.VK_F:
+	    	case KeyEvent.VK_SPACE:
 	    		listener.flipBrick();
 	     		break;
 	     		

@@ -21,22 +21,24 @@ import game.utils.Direction;
  *
  */
 public class PhysicSolver implements IPhysicSolver{
-  
+ 
   /**
-   * The turn duration is the time needed to
+   * Time needed to
    * a brick to fall.
    */
-  public static final long TURN_DURATION_MS = 500;
+  public static final long NORMAL_BRICK_SPEED = 225;
+  public static final long ACCELERATED_BRICK_SPEED = 50;
   
   public PhysicSolver(Brick[][] board) {
     this.board = board;
     currentBrick = null;
     bricksList = new ArrayList<>();
     listeners = new ArrayList<>();
-    directionAsked = Direction.DOWN;
+    directionAsked = Direction.NO_DIRECTION;
     flipTheBrick = false;
     brickJustEnteredTheBoard = true;
     lastTime = System.currentTimeMillis();
+    brickSpeed = NORMAL_BRICK_SPEED;
   }
   
   @Override
@@ -81,6 +83,13 @@ public class PhysicSolver implements IPhysicSolver{
     }
     
     boolean brickTouchedGround = false;
+    if (directionAsked == Direction.NO_DIRECTION) {
+      brickSpeed = NORMAL_BRICK_SPEED;
+    }
+    else if (directionAsked == Direction.DOWN) {
+      brickSpeed = ACCELERATED_BRICK_SPEED;
+    }
+    
     //See if the brick is falling
     if (brickJustEnteredTheBoard)
     {
@@ -93,11 +102,11 @@ public class PhysicSolver implements IPhysicSolver{
     else if (directionAsked == Direction.RIGHT && tryToMoveRight()) {
       
     }
-    else if (elapsedTime >= TURN_DURATION_MS && isBrickFalling(currentBrick)) {
+    else if (elapsedTime >= brickSpeed && isBrickFalling(currentBrick)) {
       currentBrick.getPhysic().fall();
       lastTime = System.currentTimeMillis();
     }
-    else if (elapsedTime >= TURN_DURATION_MS){
+    else if (elapsedTime >= brickSpeed){
       brickTouchedGround = true;
     }
         
@@ -312,5 +321,10 @@ public class PhysicSolver implements IPhysicSolver{
   private boolean flipTheBrick;
   private boolean brickJustEnteredTheBoard;
   private long lastTime;
+  /**
+   * Time needed to
+   * a brick to fall.
+   */
+  private long brickSpeed;
 
 }

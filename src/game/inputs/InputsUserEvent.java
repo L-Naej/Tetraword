@@ -14,14 +14,14 @@ public class InputsUserEvent implements KeyListener {
 	public void keyPressed(KeyEvent event) {
 	    
 	    switch (event.getKeyCode()) {
-	    	case KeyEvent.VK_DOWN:
-	    		System.out.println("Fleche bas pressée");
+	    	case KeyEvent.VK_SPACE:
+	    		System.out.println("Barre espace pressée : bouge la brick vers le bas");
 	    		listener.moveBrickDown();
 	    		break;
-	    	case KeyEvent.VK_LEFT:
+	    	case KeyEvent.VK_Q:
 	    		listener.moveBrickLeft();
 	    		break;
-	    	case KeyEvent.VK_RIGHT:
+	    	case KeyEvent.VK_D:
 	    		listener.moveBrickRight();
 	    		break;
 	    	

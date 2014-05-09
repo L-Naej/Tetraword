@@ -4,6 +4,7 @@ import game.Brick;
 import game.BrickType;
 import game.GameBoard;
 import game.inputs.InputsUserEvent;
+import game.BrickFactory;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,6 +16,8 @@ import game.GameBoard;
 import game.inputs.InputsUserEvent;
 
 import javax.swing.*;
+
+
 
 
 public class Window extends JFrame{
@@ -41,16 +44,15 @@ public class Window extends JFrame{
 			
 			tableau = board.getBoard();
 
-
 			setLayout(null);
+			
 			//new panel
 	        panel = new JPanel();
 	        panel.setOpaque(true);
 	        panel.setBounds(0,20,1024,700);
 
-
 			//background
-	        Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
+	        Path backgroundPath = FileSystems.getDefault().getPath("img", "background_test.png");
 			fond = new ImageIcon(backgroundPath.toString()).getImage();
 	        //background = new JLabel(image);
 	        //panel.add(background);
@@ -60,14 +62,11 @@ public class Window extends JFrame{
 	        int score = 4000;
 	        String scoreFinal = String.valueOf(score);
 	        JLabel labelScore = new JLabel(scoreFinal);	
-	        labelScore.setLocation(50, 40);
 	        panel.add(labelScore);
-	        labelScore.setLocation(50, 40);
-	        labelScore.setForeground(java.awt.Color.black);
+	        labelScore.setBounds(0, 0, 223, 90);
+	        labelScore.setForeground(java.awt.Color.red);
 	        labelScore.setVisible(true);
-	        
-	        //panel.revalidate();
-	       
+	        	       
 	        //Bricks Path
 	        Path bluePath = FileSystems.getDefault().getPath("img/bricks", "blue.jpg");
 	        Path cyanPath = FileSystems.getDefault().getPath("img/bricks", "cyan.jpg");
@@ -85,8 +84,7 @@ public class Window extends JFrame{
 			OrangeBrick  = new ImageIcon(orangePath.toString()).getImage();
 			RedBrick     = new ImageIcon(redPath.toString()).getImage();
 			GreenBrick   = new ImageIcon(greenPath.toString()).getImage();
-	
-
+			
 	        //window
 	        setTitle("TetraWord"); // title     
 	        setDefaultCloseOperation(EXIT_ON_CLOSE); // close application
@@ -97,7 +95,34 @@ public class Window extends JFrame{
 	        setVisible(true);
 			add(panel);
 			
-		}		
+		}
+		
+		public void PrintNextBrick (Graphics g, BrickFactory brick) {
+			BrickType nextBrickType = brick.getNextBrickType();
+			switch (nextBrickType){
+				case  I:
+					g.drawImage(CyanBrick, 800, 100, null);
+					break;
+				case  J:
+					g.drawImage(BlueBrick, 800, 100, null);
+					break;
+				case  L:  
+					g.drawImage(OrangeBrick, 800, 100, null);
+					break;
+				case  O:  
+					g.drawImage(YellowBrick, 800, 100, null);
+					break;
+				case  S:  
+					g.drawImage(GreenBrick, 800, 100, null);
+					break;
+				case  T:  
+					g.drawImage(MagentaBrick, 800, 100, null);
+					break;
+				case  Z:  
+					g.drawImage(RedBrick, 800, 100, null);
+					break;
+			}
+		}
 
 		public void BricksPaint(Graphics g, int i, int j, Brick brick ){
 			int x = (int)( 363+30*WIDTHTAB/BRICKSIZE*i/10);
@@ -126,7 +151,10 @@ public class Window extends JFrame{
 				g.drawImage(fond, 0, 0, null);
 				for(int i = 0; i < 10; i++) {
 					for(int j = 0; j < 20; j++) {
-						if (tableau[i][j]!=null) BricksPaint(g, i , j, tableau[i][j] );
+						if (tableau[i][j]!=null){
+							BricksPaint(g, i , j, tableau[i][j]);
+							//PrintNextBrick(g, );
+						}
 									
 					}
 				}
@@ -144,9 +172,9 @@ public class Window extends JFrame{
 			board.insertNewBrick();
 			Window window = new Window(board);
 			while(true){
-			  board.doTurn();
+			    board.doTurn();
 				//window.setDoubleBuffered(true);   a voir pr le scintillement
-				window.repaint();
+				//window.repaint();
 				Thread.sleep(100);
 			}
 		}

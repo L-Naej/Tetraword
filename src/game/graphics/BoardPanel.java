@@ -44,8 +44,6 @@ public class BoardPanel extends JPanel {
   private Image TShape;
   private Image ZShape;
   private GameBoard board;
-  private BrickType nextShape;
-  private int score;
 
   //We use BufferedImages to improve performances and avoid flickering
   private BufferedImage backgroundBuffer;
@@ -57,7 +55,6 @@ public class BoardPanel extends JPanel {
   
   public BoardPanel(GameBoard board) {
     this.board = board;
-    nextShape = board.getBrickFactory().getNextBrickType();
     
     //background
     Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
@@ -96,8 +93,6 @@ public class BoardPanel extends JPanel {
     SShape = new ImageIcon(SPath.toString()).getImage();
     TShape = new ImageIcon(TPath.toString()).getImage();
     ZShape = new ImageIcon(ZPath.toString()).getImage();
-    
-    score=(int)(board.getScore());
   }
   
   public void NextShapePaint(Graphics g){
@@ -179,7 +174,7 @@ public class BoardPanel extends JPanel {
     public void ScorePaint(Graphics g){
     	g.setFont(new Font("Arial", Font.BOLD, 30));
     	g.setColor(Color.WHITE);
-        g.drawString(String.valueOf(score), 810, 500);
+        g.drawString(String.valueOf(board.getScore()), 810, 500);
     }
     
     

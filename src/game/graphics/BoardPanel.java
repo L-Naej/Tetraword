@@ -1,6 +1,3 @@
-/**
- * 
- */
 package game.graphics;
 
 import game.Brick;
@@ -9,6 +6,7 @@ import game.GameBoard;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -18,6 +16,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -43,9 +42,8 @@ public class BoardPanel extends JPanel {
   private Image SShape;
   private Image TShape;
   private Image ZShape;
-  private Brick[][] tableau;
-  private BrickType nextShape;
-  private int score;
+  private GameBoard board;
+  private JButton rejouer;
 
   //We use BufferedImages to improve performances and avoid flickering
   private BufferedImage backgroundBuffer;
@@ -56,8 +54,9 @@ public class BoardPanel extends JPanel {
   public final int BRICKSIZE= 30;
  
   public BoardPanel(GameBoard board) {
-    tableau = board.getBoard();
-    nextShape = board.getBrickFactory().getNextBrickType();
+
+    this.board = board;
+    
     //background
     Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
     fond = new ImageIcon(backgroundPath.toString()).getImage();
@@ -96,7 +95,9 @@ public class BoardPanel extends JPanel {
     TShape = new ImageIcon(TPath.toString()).getImage();
     ZShape = new ImageIcon(ZPath.toString()).getImage();
     
-    score=(int)(board.getScore());
+    //buttons
+    Path RejouerPath = FileSystems.getDefault().getPath("img", "rejouer.jpg");
+    rejouer= new JButton(new ImageIcon(RejouerPath.toString()));
   }
   
   public void NextShapePaint(Graphics g){
@@ -114,7 +115,7 @@ public class BoardPanel extends JPanel {
 	  brickDrawer.fillRect(0,0,brickBuffer.getWidth(),brickBuffer.getHeight());
 	  brickDrawer.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 	    
-	  switch (nextShape){
+	  switch (board.getBrickFactory().getNextBrickType()){
 	    case  I:  brickDrawer.drawImage(IShape, x, y, null);
 	    break;
 	    case  J:  brickDrawer.drawImage(JShape, x, y, null);
@@ -170,7 +171,7 @@ public class BoardPanel extends JPanel {
     public void GridPaint(Graphics g){
       for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 20; j++) {
-          if (tableau[i][j]!=null) BricksPaint(g, i , j, tableau[i][j] );
+          if (board.getBoard()[i][j]!=null) BricksPaint(g, i , j, board.getBoard()[i][j] );
                 
         }
       }
@@ -179,7 +180,7 @@ public class BoardPanel extends JPanel {
     public void ScorePaint(Graphics g){
     	g.setFont(new Font("Arial", Font.BOLD, 30));
     	g.setColor(Color.WHITE);
-        g.drawString(String.valueOf(score), 810, 500);
+        g.drawString(String.valueOf(board.getScore()), 810, 500);
     }
     
     
@@ -200,6 +201,16 @@ public class BoardPanel extends JPanel {
       
       //Draw the next Shape
       NextShapePaint(g);
+      
+      // perdu
+      if (board.isBoardFull()) {
+    	  g.drawString("Vous avez perdu", 400, getSize().height/2);
+    	  rejouer.setBounds(455, 370, 117, 30);
+    	  rejouer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    	  rejouer.setContentAreaFilled(false);
+    	  rejouer.setBorderPainted(false);
+    	  add(rejouer);
+      }
     }
     
     

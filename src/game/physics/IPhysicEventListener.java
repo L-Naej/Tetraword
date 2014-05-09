@@ -3,6 +3,8 @@
  */
 package game.physics;
 
+import java.util.ArrayList;
+
 /**
  * @author L-Naej
  *
@@ -10,5 +12,5 @@ package game.physics;
 public interface IPhysicEventListener {
   public void onBrickTouchsGround();
   public void onBoardFull();
-  public void onLineCompleted(int lineIndex);
+  public void onLineCompleted(ArrayList<Integer> lineIndices);
 }

@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 import game.physics.IPhysicEventListener;
 import game.physics.IPhysicSolver;
 import game.physics.PhysicSolver;
@@ -90,9 +92,11 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
   }
 
   @Override
-  public void onLineCompleted(int lineIndex) {
-    System.out.println("Line " + lineIndex + " completed.");
-    score.lineCompleted();
+  public void onLineCompleted(ArrayList<Integer> lineIndices) {
+    for (Integer line : lineIndices) {
+      System.out.println("Line " + line + " completed.");
+      score.lineCompleted();
+    }
   }
   
   

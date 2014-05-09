@@ -120,8 +120,7 @@ public class PhysicSolver implements IPhysicSolver{
         destroyLine(completedLine);
       
       for (IPhysicEventListener listener : listeners) {
-        for (Integer completedLine : linesCompleted)
-          listener.onLineCompleted(completedLine);
+          listener.onLineCompleted(linesCompleted);
       }
       for (IPhysicEventListener listener : listeners)
         listener.onBrickTouchsGround();
@@ -305,7 +304,7 @@ public class PhysicSolver implements IPhysicSolver{
       for (int j = 0; j < Mask.MASK_WIDTH; ++j) {
         Coordinates finalCoordinates = new Coordinates(brickCoordinates.x + j, brickCoordinates.y - i);
         if (mask.mask[j][i] && isCoordinateInsideBoard(finalCoordinates)) {
-          board[brickCoordinates.x + j][brickCoordinates.y - i] = currentBrick;
+          board[brickCoordinates.x + j][brickCoordinates.y - i] = brick;
         }
       }
     }

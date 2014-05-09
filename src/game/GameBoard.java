@@ -33,14 +33,18 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     needNewBrick = false;
     boardFull = false;
     
-    //brickFactory = new BrickFactory();
-    brickFactory = new DebugBrickFactory();
+    brickFactory = new BrickFactory();
+    //brickFactory = new DebugBrickFactory();
     currentBrick = null;
 
     for (short i = 0; i < BOARD_WIDTH; ++i)
       for (short j = 0; j < BOARD_HEIGHT; ++j) {
         boardRepresentation[i][j] = null;
       }
+  }
+  
+  public IBrickFactory getBrickFactory() {
+    return brickFactory;
   }
   
   public void insertNewBrick() {

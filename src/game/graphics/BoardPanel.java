@@ -8,10 +8,12 @@ import game.BrickType;
 import game.GameBoard;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.Font;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
@@ -35,6 +37,7 @@ public class BoardPanel extends JPanel {
   private Image RedBrick;
   private Image GreenBrick;
   private Brick[][] tableau;
+  private int score;
 
   //We use BufferedImages to improve performances and avoid flickering
   private BufferedImage backgroundBuffer;
@@ -68,6 +71,8 @@ public class BoardPanel extends JPanel {
     OrangeBrick  = new ImageIcon(orangePath.toString()).getImage();
     RedBrick     = new ImageIcon(redPath.toString()).getImage();
     GreenBrick   = new ImageIcon(greenPath.toString()).getImage();
+    
+    score=(int)(board.getScore());
   }
   
   public void BricksPaint(Graphics g, int i, int j, Brick brick ){
@@ -112,6 +117,13 @@ public class BoardPanel extends JPanel {
       }
     }
     
+    public void ScorePaint(Graphics g){
+    	g.setFont(new Font("Arial", Font.BOLD, 30));
+    	g.setColor(Color.WHITE);
+        g.drawString(String.valueOf(score), 810, 500);
+    }
+    
+    
     @Override
     public void paintComponent(Graphics g) {
       super.paintComponent(g);
@@ -123,7 +135,11 @@ public class BoardPanel extends JPanel {
      
       //Then draw the bricks on the grid
       GridPaint(g);
+      
+      //Then draw the score
+      ScorePaint(g);
     }
+    
     
     @Override
     public void setSize(int width, int height) {

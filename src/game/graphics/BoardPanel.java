@@ -43,7 +43,7 @@ public class BoardPanel extends JPanel {
   private Image SShape;
   private Image TShape;
   private Image ZShape;
-  private Brick[][] tableau;
+  private GameBoard board;
   private BrickType nextShape;
   private int score;
 
@@ -56,7 +56,7 @@ public class BoardPanel extends JPanel {
   public final int BRICKSIZE= 30;
   
   public BoardPanel(GameBoard board) {
-    tableau = board.getBoard();
+    this.board = board;
     nextShape = board.getBrickFactory().getNextBrickType();
     
     //background
@@ -114,7 +114,7 @@ public class BoardPanel extends JPanel {
 	  brickDrawer.fillRect(0,0,brickBuffer.getWidth(),brickBuffer.getHeight());
 	  brickDrawer.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 	    
-	  switch (nextShape){
+	  switch (board.getBrickFactory().getNextBrickType()){
 	    case  I:  brickDrawer.drawImage(IShape, x, y, null);
 	    break;
 	    case  J:  brickDrawer.drawImage(JShape, x, y, null);
@@ -170,7 +170,7 @@ public class BoardPanel extends JPanel {
     public void GridPaint(Graphics g){
       for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 20; j++) {
-          if (tableau[i][j]!=null) BricksPaint(g, i , j, tableau[i][j] );
+          if (board.getBoard()[i][j]!=null) BricksPaint(g, i , j, board.getBoard()[i][j] );
                 
         }
       }

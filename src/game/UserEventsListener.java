@@ -15,6 +15,7 @@ public interface UserEventsListener {
   public void moveBrickRight();
   public void moveBrickDown();
   public void flipBrick();
+  public void stopMoveBrick();
   
   public void pause();
 }

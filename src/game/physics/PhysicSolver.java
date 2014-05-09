@@ -1,6 +1,10 @@
 package game.physics;
 
 import java.util.ArrayList;
+
+
+import java.util.Collections;
+
 import game.Brick;
 import game.GameBoard;
 import game.physics.PhysicBrick.Mask;
@@ -273,7 +277,8 @@ public class PhysicSolver implements IPhysicSolver{
       board[i][lineIndex] = null;
     }
     
-    //Do gravity
+    //Do gravity, sort the brick list first by height (important!)
+    Collections.sort(bricksList, new Brick.HeightComparator());
     for (Brick brick : bricksList) {
       if (isBrickFalling(brick)) {
         cleanBrickLocation(brick.getPhysic().getCurrentMask(), brick.getCoordinates());
@@ -295,6 +300,8 @@ public class PhysicSolver implements IPhysicSolver{
       }
     }
   }
+  
+
   
   ///FIELDS
   private Brick currentBrick;

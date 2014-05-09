@@ -10,5 +10,6 @@ package game.utils;
 public enum Direction {
   DOWN,
   LEFT,
-  RIGHT
+  RIGHT,
+  NO_DIRECTION
 }

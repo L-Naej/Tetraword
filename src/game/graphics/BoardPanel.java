@@ -54,11 +54,10 @@ public class BoardPanel extends JPanel {
   public final int WIDTHTAB = 300;
   public final int HEIGHTTAB= 600;
   public final int BRICKSIZE= 30;
-  
+ 
   public BoardPanel(GameBoard board) {
     tableau = board.getBoard();
     nextShape = board.getBrickFactory().getNextBrickType();
-    
     //background
     Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
     fond = new ImageIcon(backgroundPath.toString()).getImage();
@@ -101,10 +100,11 @@ public class BoardPanel extends JPanel {
   }
   
   public void NextShapePaint(Graphics g){
-	  //
+	  
 	  int x= 812;
 	  int y= 75;
 	  
+	  //nextShape = getBrickFactory().getNextBrickType();
 	  //We use a BufferedImage to improve performances and avoid flickering
 	  Graphics2D brickDrawer = (Graphics2D) brickBuffer.getGraphics();
 	  

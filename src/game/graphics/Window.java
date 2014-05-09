@@ -24,65 +24,67 @@ public class Window extends JFrame{
 
 		public Window(GameBoard board){
       
-		      setLayout(null);
-		      //new panel
-		      panel = new JPanel();
-		      panel.setOpaque(true);
-		      panel.setBounds(0,20,1024,700);
-		      
-		      boardPanel = new BoardPanel(board);
-		      boardPanel.setBounds(0,0,1024,700);
-		      this.add(boardPanel);
-		      
-		      interfaced = new InterfacePanel(board);
-		      interfaced.setBounds(0,0,1024,700);  
-		      this.add(interfaced);
-		      
-		       //window
-		      setTitle("TetraWord"); // title     
-		      setDefaultCloseOperation(EXIT_ON_CLOSE); // close application
-		      setLocationRelativeTo(null);
-		      setLocation(150,20); // place
-		      setSize(1024,700); // size
-		      setResizable(false);
-		      setVisible(true);
-
+      setLayout(null);
+      //new panel
+      panel = new JPanel();
+      panel.setOpaque(true);
+      panel.setBounds(0,20,1024,700);
+      
+      boardPanel = new BoardPanel(board);
+      boardPanel.setBounds(0,0,1024,700);
+      this.add(boardPanel);
+      
+      interfaced = new InterfacePanel(board);
+      interfaced.setBounds(0,0,1024,700);  
+      this.add(interfaced);
+      
+       //window
+      setTitle("TetraWord"); // title     
+      setDefaultCloseOperation(EXIT_ON_CLOSE); // close application
+      setLocationRelativeTo(null);
+      setLocation(150,20); // place
+      setSize(1024,700); // size
+          setResizable(false);
+          setVisible(true);
+		
 		}		
+			
+			@Override
+			public void paint(Graphics g) {
+				super.paint(g);
+				
 
-		@Override
-		public void paint(Graphics g) {
-			super.paint(g);
-		}
-
-
+			}
+			
+	
 		private static void createAndShowGUI(final GameBoard board, final Window window) {
       
-		      Timer timer = new Timer(25, new ActionListener() {
-		      		public void actionPerformed(ActionEvent evt) {
-		      			board.doTurn();
-		      			window.repaint();
-		      		}
-		      });
-		      
-		      timer.setRepeats(true);
-		      timer.setCoalesce(true);
-		      timer.start();
-		      board.insertNewBrick();
+      Timer timer = new Timer(25, new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+            board.doTurn();
+            window.repaint();
+        }
+      });
+      timer.setRepeats(true);
+      timer.setCoalesce(true);
+      timer.start();
+      board.insertNewBrick();
 		}
-
-
+		
+		
 		public static void main(String args[]) throws InterruptedException {
 			final GameBoard board = new GameBoard();
 			final Window window = new Window(board);
 			InputsUserEvent inputs = new InputsUserEvent(board);
 			window.addKeyListener(inputs);
-
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					createAndShowGUI(board, window);
-				}
-			});
+			
+      SwingUtilities.invokeLater(new Runnable() {
+          public void run() {
+              createAndShowGUI(board, window);
+          }
+      });
 
 		}
-
+		
 }
+

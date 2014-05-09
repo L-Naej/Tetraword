@@ -83,11 +83,12 @@ public class PhysicSolver implements IPhysicSolver{
     }
     
     boolean brickTouchedGround = false;
-    if (directionAsked == Direction.NO_DIRECTION) {
-      brickSpeed = NORMAL_BRICK_SPEED;
-    }
-    else if (directionAsked == Direction.DOWN) {
+
+    if (directionAsked == Direction.DOWN) {
       brickSpeed = ACCELERATED_BRICK_SPEED;
+    }
+    else {
+      brickSpeed = NORMAL_BRICK_SPEED;
     }
     
     //See if the brick is falling

@@ -39,6 +39,12 @@ public class Brick implements Comparable<Brick>{
     return physic;
   }
   
+  public void setPhysic(PhysicBrick newPhysic) {
+    physic = null;
+    physic = newPhysic;
+    newPhysic.setCoordinates(coordinates);
+  }
+  
   public int getId() {
     return id;
   }
@@ -67,14 +73,15 @@ public class Brick implements Comparable<Brick>{
     this.coordinates = coordinates;
   }
 
-  
+  /*
   public String toString() {
     return Integer.toString(id);
   }
+  */
   
   @Override
   public int compareTo(Brick o) {
-    return this.coordinates.y - o.coordinates.y;
+    return getPhysic().compareTo(o.getPhysic());
   }
 
   ///FIELDS

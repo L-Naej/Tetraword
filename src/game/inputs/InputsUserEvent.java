@@ -25,7 +25,6 @@ public class InputsUserEvent implements KeyListener {
 	    		break;
 	    	
 	    	case KeyEvent.VK_SPACE:
-	    	  System.out.println("space pressed");
 	    		listener.flipBrick();
 	     		break;
 	     		

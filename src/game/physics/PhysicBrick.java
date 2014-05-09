@@ -2,7 +2,6 @@ package game.physics;
 
 
 import java.io.IOException;
-
 import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -26,7 +25,7 @@ import game.utils.Coordinates;
  * @author L-Naej
  *
  */
-public class PhysicBrick{
+public class PhysicBrick implements Comparable<PhysicBrick>{
   
   /**
    * y=0 <=> bottom of the mask
@@ -40,16 +39,99 @@ public class PhysicBrick{
     
     public Mask() {
       mask = new boolean[MASK_WIDTH][MASK_HEIGHT];
+      cleanMask();
+    }
+    
+    private void cleanMask() {
       for (short i = 0; i < MASK_WIDTH; ++i)
         for (short j = 0; j < MASK_HEIGHT; ++j)
           mask[i][j] = false;
     }
+    
+    private boolean test(Mask topMask, Mask bottomMask) {
+      boolean flag1 = false, flag2 = false, broken = false;
+      int top = 0, bottom = 0;
+      for (int i = 0; i < MASK_HEIGHT; ++i) {
+        int j = 0;
+        while (j < MASK_WIDTH && !mask[j][i]) 
+          ++j;
+        
+        if (j < MASK_WIDTH && mask[j][i]) {
+          if(!flag1) {
+            flag1 = true;
+            top = i;
+          }
+          else if (flag2) {
+            broken = true;
+            bottom = i;
+          }
+          else top = i;
+        }
+        else if (j >= MASK_WIDTH && flag1) {
+          flag2 = true; 
+        }
+      }
+      if (!broken)
+        return false;
+     
+      System.out.println("broken");
+      //Copy masks
+      bottomMask.cleanMask();
+      topMask.cleanMask();
+      
+      for (int i = 0; i < MASK_WIDTH; ++i) {
+        for (int j = 0; j <= top; ++j) {
+          topMask.mask[i][j] = mask[i][j];
+        }
+      }
+      
+      for (int i = 0; i < MASK_WIDTH; ++i) {
+        for (int j = bottom; j < MASK_HEIGHT; ++j) {
+          bottomMask.mask[i][j] = mask[i][j];
+        }
+      }
+      
+      System.out.println("New top mask");
+      for (int i = 0; i < MASK_HEIGHT; ++i) {
+        for (int j = 0; j < MASK_WIDTH; ++j) {
+          System.out.print(topMask.mask[j][i] ? "1" : "0");
+        }
+        System.out.println();
+      }
+      
+      
+ 
+      
+      System.out.println("New bottom mask");
+      for (int i = 0; i < MASK_HEIGHT; ++i) {
+        for (int j = 0; j < MASK_WIDTH; ++j) {
+          System.out.print(bottomMask.mask[j][i] ? "1" : "0" );
+        }
+        System.out.println();
+      }
+      
+      
+      return true;
+    }
+
   }
   
   public static final PhysicBrick createPhysicBrick(Brick brick) {
     PhysicBrick result = new PhysicBrick(brick);
 
     return result;
+  }
+  
+  public boolean testIsBroken(ArrayList<PhysicBrick> newBricks) {
+    Mask topMask = new Mask();
+    Mask bottoMask = new Mask();
+    if (getCurrentMask().test(topMask, bottoMask)) {
+      newBricks.add(new PhysicBrick(coordinates, topMask));
+      newBricks.add(new PhysicBrick(coordinates, bottoMask));
+      return true;
+    }
+    
+    return false;
   }
   
   /**
@@ -94,6 +176,19 @@ public class PhysicBrick{
       masks.add(mask);
       
     }
+    
+    computeCollidingCoordinates();
+  }
+  
+  protected PhysicBrick(Coordinates coordinates, Mask mask) {
+    masks = new ArrayList<>();
+    masks.add(mask);
+    this.coordinates = coordinates;
+    currentMaskIndex = 0;
+    
+    coordinatesForFallingTest = new ArrayList<>();
+    coordinatesForLeftCollidingTest = new ArrayList<>();
+    coordinatesForRightCollidingTest = new ArrayList<>();
     
     computeCollidingCoordinates();
   }
@@ -213,6 +308,17 @@ public class PhysicBrick{
   
   public void moveRight() {
     ++coordinates.x;
+  }
+  
+  @Override
+  public int compareTo(PhysicBrick o) {
+    assert coordinatesForFallingTest.size() > 0;
+    assert o.coordinatesForFallingTest.size() > 0;
+    return (this.coordinates.y - coordinatesForFallingTest.get(0).y) - (o.coordinates.y - o.coordinatesForFallingTest.get(0).y);
+  }
+  
+  public void setCoordinates(Coordinates newCoordinates) {
+    coordinates = newCoordinates;
   }
   
   //______________ PRIVATE METHODS

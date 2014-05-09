@@ -32,12 +32,10 @@ public class Window extends JFrame{
       
       boardPanel = new BoardPanel(board);
       boardPanel.setBounds(0,0,1024,700);
-      boardPanel.setBounds(0,0,1024,700);
       this.add(boardPanel);
       
       interfaced = new InterfacePanel(board);
       interfaced.setBounds(0,0,1024,700);  
-      interfaced.setBounds(0,0,1024,700);
       this.add(interfaced);
       
        //window

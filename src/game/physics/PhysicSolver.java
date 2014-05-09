@@ -116,8 +116,11 @@ public class PhysicSolver implements IPhysicSolver{
     
     if (brickTouchedGround) {
       ArrayList<Integer> linesCompleted = checkLinesCompleted(currentBrick);
+      Collections.sort(linesCompleted);
       for (Integer completedLine : linesCompleted)
         destroyLine(completedLine);
+      //Now that the line is destroyed: update gravity!
+      updateGravityOnBoard();
       
       for (IPhysicEventListener listener : listeners) {
           listener.onLineCompleted(linesCompleted);
@@ -165,6 +168,7 @@ public class PhysicSolver implements IPhysicSolver{
   ///________________PRIVATE METHODS_____________________________
   ///
   private boolean isBrickFalling(Brick brick) {
+    assert brick.getPhysic() != null;
     ArrayList<Coordinates> coordToTest = brick.getPhysic().getCoordinatesForFallingTest();
     Coordinates brickCoordinates = brick.getCoordinates();
     
@@ -273,27 +277,56 @@ public class PhysicSolver implements IPhysicSolver{
    * @param lineIndex the line to destroy
    */
   private void destroyLine(int lineIndex) {
-    
+    System.out.println("------------------------------------------");
+    System.out.println("Destroy line " + lineIndex);
     for (int i = 0; i < GameBoard.BOARD_WIDTH; ++i) {
+      System.out.println("Destroy column " + i);
       Brick brickToModify = board[i][lineIndex];
+      assert brickToModify != null;
+      
       //Modify brick mask
       brickToModify.getPhysic().modifyMask(new Coordinates(i, lineIndex));
       
-      if (brickToModify.getPhysic().isBrickTotallyDestroyed())
+      //If brick is split in two
+      ArrayList<PhysicBrick> result = new ArrayList<>();
+      System.out.println(("Brick type : " + brickToModify.getType()));
+      if (brickToModify.getPhysic().testIsBroken(result)) {
+        Brick topBrick = new Brick(brickToModify.getId(), brickToModify.getType(), new Coordinates(brickToModify.getCoordinates()));
+        topBrick.setPhysic(result.get(0));
+        Brick bottomBrick = new Brick(brickToModify.getId(), brickToModify.getType(), new Coordinates(brickToModify.getCoordinates()));
+        bottomBrick.setPhysic(result.get(1));
+
+        //Replace old brick by new bottom brick
+        for(int row = 0; row < lineIndex; ++row) {
+          for (int col = 0; col < GameBoard.BOARD_WIDTH; ++col) {
+            if (board[col][row]  == brickToModify) {
+              board[col][row] = bottomBrick;
+              System.out.print("New bottom brick " + bottomBrick + " at (" +col + ", "+ row +")" );
+            }
+          }
+        }
+                
+        //Replace old brick by new top brick
+        for(int row = GameBoard.BOARD_HEIGHT - 1; row > lineIndex; --row) {
+          for (int col = 0; col < GameBoard.BOARD_WIDTH; ++col) {
+            if (board[col][row] == brickToModify ) {
+              board[col][row] = topBrick;
+              System.out.print("New top brick " + topBrick + " at (" +col + ", "+ row +")" );
+            }
+          }
+        }
+        System.out.println();
+        
+        bricksList.add(topBrick);
+        bricksList.add(bottomBrick);
+        bricksList.remove(brickToModify);
+      }
+      
+      else if (brickToModify.getPhysic().isBrickTotallyDestroyed())
         bricksList.remove(brickToModify);
       
       //Update board
       board[i][lineIndex] = null;
-    }
-    
-    //Do gravity, sort the brick list first by height (important!)
-    Collections.sort(bricksList, new Brick.HeightComparator());
-    for (Brick brick : bricksList) {
-      if (isBrickFalling(brick)) {
-        cleanBrickLocation(brick.getPhysic().getCurrentMask(), brick.getCoordinates());
-        brick.getPhysic().fall();
-        updateBrickPositionOnBoard(brick);
-      }
     }
   }
   
@@ -308,6 +341,21 @@ public class PhysicSolver implements IPhysicSolver{
         }
       }
     }
+  }
+  
+  private void updateGravityOnBoard() {
+  //Do gravity, sort the brick list first by height (important!)
+    Collections.sort(bricksList, new Brick.HeightComparator());
+    for (Brick brick : bricksList) {
+      assert brick != null;
+      if (isBrickFalling(brick)) {
+        cleanBrickLocation(brick.getPhysic().getCurrentMask(), brick.getCoordinates());
+        System.out.println("Brick " + brick.getType() + " ( "+ brick + ") is falling");
+        brick.getPhysic().fall();
+        updateBrickPositionOnBoard(brick);
+      }
+    }
+    
   }
   
 

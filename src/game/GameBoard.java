@@ -32,7 +32,7 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     score = new Score();
     
     paused = false;
-    needNewBrick = false;
+    needNewBrick = true;
     boardFull = false;
     
     brickFactory = new BrickFactory();

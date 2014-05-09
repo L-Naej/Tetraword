@@ -67,7 +67,6 @@ public class Window extends JFrame{
 		      timer.setRepeats(true);
 		      timer.setCoalesce(true);
 		      timer.start();
-		      board.insertNewBrick();
 		}
 
 

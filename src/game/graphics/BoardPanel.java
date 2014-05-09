@@ -1,6 +1,3 @@
-/**
- * 
- */
 package game.graphics;
 
 import game.Brick;
@@ -9,6 +6,7 @@ import game.GameBoard;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -46,6 +44,7 @@ public class BoardPanel extends JPanel {
   private Image TShape;
   private Image ZShape;
   private GameBoard board;
+  private JButton rejouer;
 
   //We use BufferedImages to improve performances and avoid flickering
   private BufferedImage backgroundBuffer;
@@ -54,8 +53,9 @@ public class BoardPanel extends JPanel {
   public final int WIDTHTAB = 300;
   public final int HEIGHTTAB= 600;
   public final int BRICKSIZE= 30;
-  
+ 
   public BoardPanel(GameBoard board) {
+
     this.board = board;
     
     //background
@@ -99,13 +99,18 @@ public class BoardPanel extends JPanel {
     SShape = new ImageIcon(SPath.toString()).getImage();
     TShape = new ImageIcon(TPath.toString()).getImage();
     ZShape = new ImageIcon(ZPath.toString()).getImage();
+    
+    //buttons
+    Path RejouerPath = FileSystems.getDefault().getPath("img", "rejouer.jpg");
+    rejouer= new JButton(new ImageIcon(RejouerPath.toString()));
   }
   
   public void NextShapePaint(Graphics g){
-	  //
+	  
 	  int x= 812;
 	  int y= 75;
 	  
+	  //nextShape = getBrickFactory().getNextBrickType();
 	  //We use a BufferedImage to improve performances and avoid flickering
 	  Graphics2D brickDrawer = (Graphics2D) brickBuffer.getGraphics();
 	  
@@ -206,6 +211,16 @@ public class BoardPanel extends JPanel {
       
       //Draw the next Shape
       NextShapePaint(g);
+      
+      // perdu
+      if (board.isBoardFull()) {
+    	  g.drawString("Vous avez perdu", 400, getSize().height/2);
+    	  rejouer.setBounds(455, 370, 117, 30);
+    	  rejouer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    	  rejouer.setContentAreaFilled(false);
+    	  rejouer.setBorderPainted(false);
+    	  add(rejouer);
+      }
     }
     
     

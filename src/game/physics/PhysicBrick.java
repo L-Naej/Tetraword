@@ -2,6 +2,7 @@ package game.physics;
 
 
 import java.io.IOException;
+
 import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -25,7 +26,7 @@ import game.utils.Coordinates;
  * @author L-Naej
  *
  */
-public class PhysicBrick {
+public class PhysicBrick{
   
   /**
    * y=0 <=> bottom of the mask
@@ -67,7 +68,7 @@ public class PhysicBrick {
     
     Path maskPath = FileSystems.getDefault().getPath("data", "Brick" + brick.getType().toString() +".mask");
     List<String> result = null;
-    //TODO work on exception handling in Tetraword
+
     try {
       result = Files.readAllLines(maskPath, Charset.defaultCharset());
     } catch (IOException e) {
@@ -214,7 +215,7 @@ public class PhysicBrick {
     ++coordinates.x;
   }
   
-  
+  //______________ PRIVATE METHODS
   private final void computeCollidingCoordinates() {
     computeCoordinatesForFallingTest();
     computeCoordinatesForLeftCollidingTest();
@@ -282,5 +283,6 @@ public class PhysicBrick {
   private ArrayList<Coordinates> coordinatesForRightCollidingTest;
   private ArrayList<Mask> masks;
   private short currentMaskIndex;
+
 
 }

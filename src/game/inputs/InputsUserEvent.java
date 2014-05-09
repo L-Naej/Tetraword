@@ -14,18 +14,17 @@ public class InputsUserEvent implements KeyListener {
 	public void keyPressed(KeyEvent event) {
 	    
 	    switch (event.getKeyCode()) {
-	    	case KeyEvent.VK_SPACE:
-	    		System.out.println("Barre espace pressée : bouge la brick vers le bas");
+	    	case KeyEvent.VK_DOWN:
 	    		listener.moveBrickDown();
 	    		break;
-	    	case KeyEvent.VK_Q:
+	    	case KeyEvent.VK_LEFT:
 	    		listener.moveBrickLeft();
 	    		break;
-	    	case KeyEvent.VK_D:
+	    	case KeyEvent.VK_RIGHT:
 	    		listener.moveBrickRight();
 	    		break;
 	    	
-	    	case KeyEvent.VK_F:
+	    	case KeyEvent.VK_SPACE:
 	    		listener.flipBrick();
 	     		break;
 	     		
@@ -36,17 +35,17 @@ public class InputsUserEvent implements KeyListener {
 	    }
 	}
 
+	 @Override
+	  public void keyReleased(KeyEvent e) {
+	    listener.stopMoveBrick();
+	  }
+	 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	private UserEventsListener listener;
 

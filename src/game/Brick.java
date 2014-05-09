@@ -1,5 +1,7 @@
 package game;
 
+import java.util.Comparator;
+
 import game.physics.PhysicBrick;
 import game.utils.Coordinates;
 
@@ -12,8 +14,19 @@ import game.utils.Coordinates;
  * @author L-Naej
  *
  */
-public class Brick {
+public class Brick implements Comparable<Brick>{
  
+  /**
+   * Height Comparator
+   */
+  static public class HeightComparator implements Comparator<Brick> {
+
+    @Override
+    public int compare(Brick brick1, Brick brick2) {
+      return brick1.compareTo(brick2);
+    }
+    
+  }
   public Brick(int id, BrickType type, Coordinates coordinates) {
     this.setType(type);
     this.setCoordinates(coordinates);
@@ -57,6 +70,11 @@ public class Brick {
   
   public String toString() {
     return Integer.toString(id);
+  }
+  
+  @Override
+  public int compareTo(Brick o) {
+    return this.coordinates.y - o.coordinates.y;
   }
 
   ///FIELDS

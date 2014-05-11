@@ -107,9 +107,9 @@ public class BoardPanel extends JPanel {
     TShape = new ImageIcon(TPath.toString()).getImage();
     ZShape = new ImageIcon(ZPath.toString()).getImage();
     
-    //buttons
-    Path RejouerPath = FileSystems.getDefault().getPath("img", "rejouer.jpg");
-    rejouer= new JButton(new ImageIcon(RejouerPath.toString()));
+    //replay
+    Path RejouerPath = FileSystems.getDefault().getPath("img", "replay.png");
+    rejouer = new JButton(new ImageIcon(RejouerPath.toString()));
   }
   
   public void nextShapePaint(Graphics g){
@@ -231,13 +231,12 @@ public class BoardPanel extends JPanel {
       //draw commands if click = true
       if (ImageMouseListener.getClick() == true){
     	  commandsPaint(g);
-    	  board.pause();
       }
       
       // perdu
       if (board.isBoardFull()) {
-    	  g.drawString("Vous avez perdu", 400, getSize().height/2);
-    	  rejouer.setBounds(455, 370, 117, 30);
+    	  g.drawString("You loose!", 435, getSize().height/2);
+    	  rejouer.setBounds(395, 370, 234, 53);
     	  rejouer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     	  rejouer.setContentAreaFilled(false);
     	  rejouer.setBorderPainted(false);

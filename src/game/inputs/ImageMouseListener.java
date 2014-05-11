@@ -29,11 +29,11 @@ public class ImageMouseListener extends JPanel {
 	       //actions when help clicked
 	  		if(e.getClickCount() == 1) {
 	  			click = true;
-	  	        System.out.println("click true \n Un clic a été détecté sur le bouton help !!!");
+	  			System.out.println("Display commands.");
 	  	    }
 	  		if(e.getClickCount() == 2) {
 	  			click = false;
-	  	        System.out.println("click false \n Un double clic a été détecté sur le bouton continue !!!");
+	  			System.out.println("Remove commands.");
 	  	    }
 	    }
 

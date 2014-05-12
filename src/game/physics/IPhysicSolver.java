@@ -18,4 +18,6 @@ public interface IPhysicSolver {
   public boolean tryToFlipBrick();
   public void tryToMove(Direction direction);
   public void insertNewBrick(Brick newBrick);
+
+  public void resetSolver();
 }

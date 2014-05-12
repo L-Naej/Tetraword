@@ -29,16 +29,21 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     physic = new PhysicSolver(boardRepresentation);
     physic.addPhysicEventListener(this);
     
-    score = new Score();
+    brickFactory = new BrickFactory();
     
+    restart();
+
+  }
+  
+  @Override
+  public void restart() {
+    score = null;
+    score = new Score();
     paused = false;
     needNewBrick = true;
     boardFull = false;
-    
-    brickFactory = new BrickFactory();
-    //brickFactory = new DebugBrickFactory();
     currentBrick = null;
-
+    physic.resetSolver();
     for (short i = 0; i < BOARD_WIDTH; ++i)
       for (short j = 0; j < BOARD_HEIGHT; ++j) {
         boardRepresentation[i][j] = null;

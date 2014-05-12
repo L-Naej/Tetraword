@@ -31,9 +31,16 @@ public class PhysicSolver implements IPhysicSolver{
   
   public PhysicSolver(Brick[][] board) {
     this.board = board;
-    currentBrick = null;
     bricksList = new ArrayList<>();
     listeners = new ArrayList<>();
+    
+    resetSolver();
+
+  }
+  
+  @Override
+  public void resetSolver() {
+    currentBrick = null;
     directionAsked = Direction.NO_DIRECTION;
     flipTheBrick = false;
     brickJustEnteredTheBoard = true;

@@ -19,4 +19,5 @@ public interface UserEventsListener {
   
   public void pause();
   public void play();
+  public void restart();
 }

@@ -127,8 +127,12 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
 
   @Override
   public void pause() {
-    paused = !paused;
-    
+    paused = true; 
+  }
+  
+  @Override
+  public void play() {
+	  paused = false;
   }
   
   ///PRIVATE FIELDS

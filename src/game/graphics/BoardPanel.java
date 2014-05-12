@@ -3,6 +3,7 @@ package game.graphics;
 import game.Brick;
 import game.BrickType;
 import game.GameBoard;
+import game.inputs.ImageMouseListener;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -20,7 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
- * @author Florent François
+ * @author Florent François & Brice Berthelot
  *
  */
 public class BoardPanel extends JPanel {
@@ -44,6 +45,8 @@ public class BoardPanel extends JPanel {
   private Image ZShape;
   private GameBoard board;
   private JButton rejouer;
+  public static Image help;
+  public static Image commands;
 
   //We use BufferedImages to improve performances and avoid flickering
   private BufferedImage backgroundBuffer;
@@ -60,6 +63,15 @@ public class BoardPanel extends JPanel {
     //background
     Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
     fond = new ImageIcon(backgroundPath.toString()).getImage();
+    
+    //help button
+	Path helpPath = FileSystems.getDefault().getPath("img", "helpButton.png");
+	help = new ImageIcon(helpPath.toString()).getImage();
+	addMouseListener(ImageMouseListener.getListener());
+	
+	//commands image path
+	Path commandsPath = FileSystems.getDefault().getPath("img", "commands.png");
+	commands = new ImageIcon(commandsPath.toString()).getImage();
     
     //Bricks and Forms Path
     Path bluePath = FileSystems.getDefault().getPath("img/bricks", "blue.jpg");
@@ -95,12 +107,12 @@ public class BoardPanel extends JPanel {
     TShape = new ImageIcon(TPath.toString()).getImage();
     ZShape = new ImageIcon(ZPath.toString()).getImage();
     
-    //buttons
-    Path RejouerPath = FileSystems.getDefault().getPath("img", "rejouer.jpg");
-    rejouer= new JButton(new ImageIcon(RejouerPath.toString()));
+    //replay
+    Path RejouerPath = FileSystems.getDefault().getPath("img", "replay.png");
+    rejouer = new JButton(new ImageIcon(RejouerPath.toString()));
   }
   
-  public void NextShapePaint(Graphics g){
+  public void nextShapePaint(Graphics g){
 	  
 	  int x= 812;
 	  int y= 75;
@@ -135,7 +147,7 @@ public class BoardPanel extends JPanel {
   }
   
   
-  public void BricksPaint(Graphics g, int i, int j, Brick brick ){
+  public void bricksPaint(Graphics g, int i, int j, Brick brick ){
     int x = (int)( 363+30*WIDTHTAB/BRICKSIZE*i/10);
     int y = (int)( -621+30*HEIGHTTAB/BRICKSIZE*j/20);
     BrickType type = brick.getType(); // on recupe le type de brick
@@ -168,21 +180,32 @@ public class BoardPanel extends JPanel {
     g.drawImage(brickBuffer, 0, 0, null);
   }
 
-    public void GridPaint(Graphics g){
+    public void gridPaint(Graphics g){
       for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 20; j++) {
-          if (board.getBoard()[i][j]!=null) BricksPaint(g, i , j, board.getBoard()[i][j] );
+          if (board.getBoard()[i][j]!=null) bricksPaint(g, i , j, board.getBoard()[i][j] );
                 
         }
       }
     }
     
-    public void ScorePaint(Graphics g){
+    public void scorePaint(Graphics g){
     	g.setFont(new Font("Arial", Font.BOLD, 30));
     	g.setColor(Color.WHITE);
         g.drawString(String.valueOf(board.getScore()), 810, 500);
     }
     
+    public void helpPaint(Graphics g){
+    	g.drawImage(help, 70, 350, null);    	
+    }
+    
+    public static void commandsPaint(Graphics g){
+    	g.drawImage(commands, 0, 102, null);
+    }
+    
+    public static Image getHelpImage(){
+    	return help;
+    }
     
     @Override
     public void paintComponent(Graphics g) {
@@ -194,18 +217,26 @@ public class BoardPanel extends JPanel {
       g.drawImage(backgroundBuffer, 0, 0, null);
      
       //Then draw the bricks on the grid
-      GridPaint(g);
+      gridPaint(g);
       
       //Draw the score
-      ScorePaint(g);
+      scorePaint(g);
       
       //Draw the next Shape
-      NextShapePaint(g);
+      nextShapePaint(g);
+      
+    //Draw the help
+      helpPaint(g);
+      
+      //draw commands if click = true
+      if (ImageMouseListener.getClick() == true){
+    	  commandsPaint(g);
+      }
       
       // perdu
       if (board.isBoardFull()) {
-    	  g.drawString("Vous avez perdu", 400, getSize().height/2);
-    	  rejouer.setBounds(455, 370, 117, 30);
+    	  g.drawString("You loose!", 435, getSize().height/2);
+    	  rejouer.setBounds(395, 370, 234, 53);
     	  rejouer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     	  rejouer.setContentAreaFilled(false);
     	  rejouer.setBorderPainted(false);

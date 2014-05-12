@@ -1,13 +1,12 @@
 package game.graphics;
 
 import game.GameBoard;
-
-
 import game.inputs.InputsUserEvent;
 
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 
 
 
@@ -25,11 +24,12 @@ public class Window extends JFrame{
 		public Window(GameBoard board){
       
 		      setLayout(null);
+		      
 		      //new panel
 		      panel = new JPanel();
 		      panel.setOpaque(true);
 		      panel.setBounds(0,20,1024,700);
-		      
+		      		      
 		      boardPanel = new BoardPanel(board);
 		      boardPanel.setBounds(0,0,1024,700);
 		      this.add(boardPanel);

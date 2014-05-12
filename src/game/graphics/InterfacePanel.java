@@ -2,8 +2,11 @@ package game.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
 import game.GameBoard;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class InterfacePanel extends JPanel {

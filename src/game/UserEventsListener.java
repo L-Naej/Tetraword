@@ -18,4 +18,5 @@ public interface UserEventsListener {
   public void stopMoveBrick();
   
   public void pause();
+  public void play();
 }

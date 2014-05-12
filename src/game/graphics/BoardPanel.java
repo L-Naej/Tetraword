@@ -3,7 +3,6 @@ package game.graphics;
 import game.Brick;
 import game.BrickType;
 import game.GameBoard;
-import game.inputs.ImageMouseListener;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -11,6 +10,8 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.nio.file.FileSystems;
@@ -24,7 +25,7 @@ import javax.swing.JPanel;
  * @author Florent François & Brice Berthelot
  *
  */
-public class BoardPanel extends JPanel {
+public class BoardPanel extends JPanel implements MouseListener{
   
   private static final long serialVersionUID = -6673567999209675854L;
   
@@ -47,6 +48,8 @@ public class BoardPanel extends JPanel {
   private JButton rejouer;
   public static Image help;
   public static Image commands;
+  
+  public static boolean click = false;
 
   //We use BufferedImages to improve performances and avoid flickering
   private BufferedImage backgroundBuffer;
@@ -67,7 +70,7 @@ public class BoardPanel extends JPanel {
     //help button
 	Path helpPath = FileSystems.getDefault().getPath("img", "helpButton.png");
 	help = new ImageIcon(helpPath.toString()).getImage();
-	addMouseListener(ImageMouseListener.getListener());
+	addMouseListener(this);
 	
 	//commands image path
 	Path commandsPath = FileSystems.getDefault().getPath("img", "commands.png");
@@ -229,8 +232,9 @@ public class BoardPanel extends JPanel {
       helpPaint(g);
       
       //draw commands if click = true
-      if (ImageMouseListener.getClick() == true){
+      if (click){
     	  commandsPaint(g);
+    	  board.pause();
       }
       
       // perdu
@@ -260,5 +264,39 @@ public class BoardPanel extends JPanel {
       backgroundBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       brickBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int x = e.getX();
+  		int y = e.getY();
+  		
+  		if(x>=70 && x<=324 && y>=350 && y<=403){
+  		    //actions when help clicked
+	  		if(!click) {
+	  			click = true;
+	  			board.pause();
+	  	    }
+	  		else {
+	  			click = false;
+	  			board.play();
+	  	    }
+  		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
 
 }

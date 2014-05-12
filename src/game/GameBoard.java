@@ -16,6 +16,7 @@ import game.utils.Direction;
  * modules of the game.
  *
  */
+
 public class GameBoard implements UserEventsListener, IPhysicEventListener {
   
   public static final short BOARD_WIDTH = 10;

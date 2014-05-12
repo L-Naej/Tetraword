@@ -2,16 +2,17 @@ package game.graphics;
 
 import game.GameBoard;
 import game.inputs.InputsUserEvent;
-
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
-
-
 import javax.swing.*;
 
+/**
+ * @author Florent François & Brice Berthelot
+ * 
+ * General options windows
+ *
+ */
 
 public class Window extends JFrame{
 

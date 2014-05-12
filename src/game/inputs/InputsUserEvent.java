@@ -9,6 +9,7 @@ public class InputsUserEvent implements KeyListener {
 	
 	public InputsUserEvent(UserEventsListener listener) {
 		this.listener = listener;
+		paused = false;
 	}
 	
 	public void keyPressed(KeyEvent event) {
@@ -29,7 +30,11 @@ public class InputsUserEvent implements KeyListener {
 	     		break;
 	     		
 	     	case KeyEvent.VK_P:
-	     		listener.pause();
+	     	  if (!paused) {
+	     	    listener.pause();
+	     	    paused = true;
+	     	  }
+	     	  else listener.play();
 	     		break;
 	    
 	    }
@@ -48,5 +53,6 @@ public class InputsUserEvent implements KeyListener {
 
 	
 	private UserEventsListener listener;
+	private boolean paused;
 
 }

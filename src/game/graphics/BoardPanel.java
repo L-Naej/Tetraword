@@ -107,7 +107,7 @@ public class BoardPanel extends JPanel {
 	  
 	  //nextShape = getBrickFactory().getNextBrickType();
 	  //We use a BufferedImage to improve performances and avoid flickering
-	  Graphics2D brickDrawer = (Graphics2D) brickBuffer.getGraphics();
+	  Graphics2D brickDrawer = brickBuffer.createGraphics();
 	  
 	  //Tricky trick to clear the buffer, thanks StackOverflow 
 	  //http://stackoverflow.com/questions/5672697/java-filling-a-bufferedimage-with-transparent-pixels
@@ -141,7 +141,7 @@ public class BoardPanel extends JPanel {
     BrickType type = brick.getType(); // on recupe le type de brick
     
     //We use a BufferedImage to improve performances and avoid flickering
-    Graphics2D brickDrawer = (Graphics2D) brickBuffer.getGraphics();
+    Graphics2D brickDrawer = brickBuffer.createGraphics();
     
     //Tricky trick to clear the buffer, thanks StackOverflow 
     //http://stackoverflow.com/questions/5672697/java-filling-a-bufferedimage-with-transparent-pixels
@@ -189,7 +189,7 @@ public class BoardPanel extends JPanel {
       super.paintComponent(g);
       
       //Draw background Image
-      Graphics backgroundDrawer = backgroundBuffer.getGraphics();
+      Graphics2D backgroundDrawer = backgroundBuffer.createGraphics();
       backgroundDrawer.drawImage(fond, 0, 0, null);
       g.drawImage(backgroundBuffer, 0, 0, null);
      

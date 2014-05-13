@@ -52,7 +52,11 @@ public class InputsUserEvent implements KeyListener {
 	     	    listener.pause();
 	     	    paused = true;
 	     	  }
-	     	  else listener.play();
+	     	  else { 
+	     	    listener.play();
+	     	    paused = false;
+	     	  }
+	     	  
 	     		break;
 	    }
 	}

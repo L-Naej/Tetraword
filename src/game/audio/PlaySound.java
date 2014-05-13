@@ -1,19 +1,31 @@
 package game.audio;
 
+import game.UserEventsListener;
+import game.physics.IPhysicEventListener;
+
 import java.io.*;
+
 import javax.sound.sampled.*;
+
+/**
+ * @author Brice Berthelot
+ * 
+ * Lets play the music launch of
+ * the game (. Wav format only).
+ * The hand recovers music via its
+ * location in the project over several
+ * options are available.
+ */
 
 public class PlaySound
 {
-	public static void main(String[] args)
-	{
-		sound = new File("music/Ylvis - What Does The Fox Say (8-Bit NES Version).wav"); // Write you own file location here and be aware that it need to be an .wav file
-		
+	public static void main(String[] args){
+		sound = new File("music/Ylvis - What Does The Fox Say (8-Bit NES Version).wav");
 		new Thread(play).start();
 	}
 	
 	static File sound;
-	static boolean muted = false; // This should explain itself
+	static boolean muted = false;
 	static float volume = 100.0f; // This is the volume that goes from 0 to 100
 	static float pan = 0.0f; // The balance between the speakers 0 is both sides and it goes from -1 to 1
 	
@@ -24,21 +36,16 @@ public class PlaySound
 	static int loop_times = 0; // Set the amount of extra times you want the sound to loop (you don't need to have looped_forever set to true)
 	static int loops_done = 0; // When the program is running this is counting the times the sound has looped so it knows when to stop
 	
-	final static Runnable play = new Runnable() // This Thread/Runnabe is for playing the sound
-	{
-		public void run()
-		{
-			try
-			{
+	final static Runnable play = new Runnable(){// This Thread/Runnabe is for playing the sound
+	
+		public void run(){
+			try{
 				// Check if the audio file is a .wav file
-				if (sound.getName().toLowerCase().contains(".wav"))
-				{
+				if (sound.getName().toLowerCase().contains(".wav")){
 					AudioInputStream stream = AudioSystem.getAudioInputStream(sound);
-					
 					AudioFormat format = stream.getFormat();
 					
-					if (format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED)
-					{
+					if (format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED){
 						format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
 								format.getSampleRate(),
 								format.getSampleSizeInBits() * 2,
@@ -46,7 +53,6 @@ public class PlaySound
 								format.getFrameSize() * 2,
 								format.getFrameRate(),
 								true);
-						
 						stream = AudioSystem.getAudioInputStream(format, stream);
 					}
 					
@@ -74,20 +80,17 @@ public class PlaySound
 					double since_last_update = (System.currentTimeMillis() - last_update) / 1000.0d;
 					
 					// Wait the amount of seconds set before continuing
-					while (since_last_update < seconds)
-					{
+					while (since_last_update < seconds){
 						since_last_update = (System.currentTimeMillis() - last_update) / 1000.0d;
 					}
 					
 					int num_read = 0;
 					byte[] buf = new byte[line.getBufferSize()];
 					
-					while ((num_read = stream.read(buf, 0, buf.length)) >= 0)
-					{
+					while ((num_read = stream.read(buf, 0, buf.length)) >= 0){
 						int offset = 0;
 						
-						while (offset < num_read)
-						{
+						while (offset < num_read){
 							offset += line.write(buf, offset, num_read - offset);
 						}
 					}
@@ -95,12 +98,10 @@ public class PlaySound
 					line.drain();
 					line.stop();
 					
-					if (looped_forever)
-					{
+					if (looped_forever){
 						new Thread(play).start();
 					}
-					else if (loops_done < loop_times)
-					{
+					else if (loops_done < loop_times){
 						loops_done++;
 						new Thread(play).start();
 					}

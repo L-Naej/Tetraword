@@ -18,18 +18,12 @@ public class Window extends JFrame{
 
 
 		private static final long serialVersionUID = 1L;
-		private JPanel panel; 
 		private BoardPanel boardPanel;
 
 		public Window(GameBoard board){
       
 		      setLayout(null);
-		      
-		      //new panel
-		      panel = new JPanel();
-		      panel.setOpaque(true);
-		      panel.setBounds(0,20,1024,700);
-		      		      
+		            
 		      boardPanel = new BoardPanel(board);
 		      boardPanel.setBounds(0,0,1024,700);
 		      this.add(boardPanel);

@@ -9,10 +9,13 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
+
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import javax.swing.ImageIcon;
@@ -46,7 +49,7 @@ public class BoardPanel extends JPanel implements MouseListener {
 	private Image OrangeBrick;
 	private Image RedBrick;
 	private Image GreenBrick;
-	private Image	IShape;
+	private Image IShape;
 	private Image JShape;
 	private Image LShape;
 	private Image OShape;
@@ -67,8 +70,7 @@ public class BoardPanel extends JPanel implements MouseListener {
   
 	public final int WIDTHTAB  = 300;
 	public final int HEIGHTTAB = 600;
-	public final int BRICKSIZE = 30;
- 
+	public final int BRICKSIZE = 30; 
 
   /**
    * Construct the board's view and linked in to the GameBoard
@@ -82,6 +84,10 @@ public class BoardPanel extends JPanel implements MouseListener {
     //background
     Path backgroundPath = FileSystems.getDefault().getPath("img", "background.jpg");
     fond = new ImageIcon(backgroundPath.toString()).getImage();
+    
+    //music
+    
+    
     
     //help button
 	Path helpPath = FileSystems.getDefault().getPath("img", "helpButton.png");
@@ -129,6 +135,7 @@ public class BoardPanel extends JPanel implements MouseListener {
     //replay
     Path RejouerPath = FileSystems.getDefault().getPath("img", "replay.png");
     rejouer = new JButton(new ImageIcon(RejouerPath.toString()));
+    rejouer.setVisible(false);
   }
     
     @Override
@@ -158,16 +165,26 @@ public class BoardPanel extends JPanel implements MouseListener {
 	    	board.pause();
 	    }
       
-	    //Loose
-	    if (board.isBoardFull()){
-	    	g.drawString("You loose!", 435, getSize().height/2);
-	    	rejouer.setBounds(395, 370, 234, 53);
-	    	rejouer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	    	rejouer.setContentAreaFilled(false);
-	    	rejouer.setBorderPainted(false);
-	    	add(rejouer);
-	    }
-	}
+      //Lost
+      if (board.isBoardFull()) {
+    	  g.drawString("You loose!", 435, getSize().height/2);
+    	  rejouer.setBounds(395, 370, 234, 53);
+    	  rejouer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    	  rejouer.setContentAreaFilled(false);
+    	  rejouer.setBorderPainted(false);
+    	  add(rejouer);
+    	  rejouer.setVisible(true);
+    	  rejouer.addActionListener(new ActionListener() {
+    		  public void actionPerformed(ActionEvent e)
+              {
+                  //Execute when button is pressed
+                  board.restart();
+                  remove(rejouer);
+              }
+          }); 
+    	  
+      }
+    }
     
     /**
      * Set the differents values for the size of the window

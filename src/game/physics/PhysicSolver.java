@@ -36,17 +36,20 @@ public class PhysicSolver implements IPhysicSolver{
     bricksList = new ArrayList<>();
     listeners = new ArrayList<>();
     
-    resetSolver();
+    resetSolver(this.board);
 
   }
   
   @Override
-  public void resetSolver() {
+  public void resetSolver(Brick[][] board) {
+    this.board = board; 
     currentBrick = null;
     directionAsked = Direction.NO_DIRECTION;
     flipTheBrick = false;
     brickJustEnteredTheBoard = true;
     lastTime = System.currentTimeMillis();
+    brickSpeed = NORMAL_BRICK_SPEED;
+    bricksList.clear();
     brickSpeed = NORMAL_BRICK_SPEED;
   }
   

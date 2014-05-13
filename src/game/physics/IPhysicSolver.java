@@ -54,5 +54,5 @@ public interface IPhysicSolver {
    * Reset the solver.
    * Call it when you start a new game.
    */
-  public void resetSolver();
+  void resetSolver(Brick[][] board);
 }

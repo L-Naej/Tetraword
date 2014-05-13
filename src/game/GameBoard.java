@@ -50,11 +50,12 @@ public class GameBoard implements UserEventsListener, IPhysicEventListener {
     needNewBrick = true;
     boardFull = false;
     currentBrick = null;
-    physic.resetSolver();
     for (short i = 0; i < BOARD_WIDTH; ++i)
       for (short j = 0; j < BOARD_HEIGHT; ++j) {
         boardRepresentation[i][j] = null;
       }
+    
+    physic.resetSolver(this.boardRepresentation);
   }
   
   public IBrickFactory getBrickFactory() {

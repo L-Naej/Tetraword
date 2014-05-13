@@ -12,7 +12,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-
+/**
+ * The window of the application.
+ * @author L-Naej
+ *
+ */
 public class Window extends JFrame{
 
 

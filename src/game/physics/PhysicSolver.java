@@ -17,6 +17,8 @@ import game.utils.Direction;
  * All processings related to bricks moves
  * and collisions are done in this class.
  * 
+ * @see IPhysicSolver
+ * 
  * @author L-Naej
  *
  */
@@ -238,6 +240,11 @@ public class PhysicSolver implements IPhysicSolver{
     }
   }
   
+  /**
+   * Indicate wether or not the coordinates are in the game board
+   * @param coordToTest the coordinates to test
+   * @return true if the coordinates are in the game board.
+   */
   private boolean isCoordinateInsideBoard(Coordinates coordToTest) {
     if ( coordToTest.y >= GameBoard.BOARD_HEIGHT 
     || coordToTest.x < 0 
@@ -297,7 +304,7 @@ public class PhysicSolver implements IPhysicSolver{
       //If brick is split in two
       ArrayList<PhysicBrick> result = new ArrayList<>();
       System.out.println(("Brick type : " + brickToModify.getType()));
-      if (brickToModify.getPhysic().testIsBroken(result)) {
+      if (brickToModify.getPhysic().isBroken(result)) {
         Brick topBrick = new Brick(brickToModify.getId(), brickToModify.getType(), new Coordinates(brickToModify.getCoordinates()));
         topBrick.setPhysic(result.get(0));
         Brick bottomBrick = new Brick(brickToModify.getId(), brickToModify.getType(), new Coordinates(brickToModify.getCoordinates()));
@@ -337,6 +344,10 @@ public class PhysicSolver implements IPhysicSolver{
     }
   }
   
+  /**
+   * Update the position of the brick 'brick' on the board.
+   * @param brick the brick to update
+   */
   private void updateBrickPositionOnBoard(Brick brick) {
     Coordinates brickCoordinates = brick.getCoordinates();
     Mask mask = brick.getPhysic().getCurrentMask();
@@ -350,6 +361,10 @@ public class PhysicSolver implements IPhysicSolver{
     }
   }
   
+  /**
+   * After a line has been destroyed, update the gravity of all the bricks
+   * on the board if needed.
+   */
   private void updateGravityOnBoard() {
   //Do gravity, sort the brick list first by height (important!)
     Collections.sort(bricksList, new Brick.HeightComparator());

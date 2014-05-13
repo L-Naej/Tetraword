@@ -2,10 +2,17 @@ package game;
 
 import java.util.Random;
 
+/**
+ * Encapsulate the generation of the brick during the game.
+ * @author L-Naej
+ * @see IBrickFactory
+ *
+ */
 public class BrickFactory implements IBrickFactory {
-
-  public static final int BRICK_TYPE_COUNT = BrickType.class.getEnumConstants().length;
   
+  /**
+   * Build the {@link BrickFactory} and generate the next brick type.
+   */
   public BrickFactory() {
 
     randomizer = new Random(System.currentTimeMillis());
@@ -13,12 +20,14 @@ public class BrickFactory implements IBrickFactory {
     currentId = 0;
   }
   
+  @Override
   public Brick createNextBrick() {
     Brick nextBrick = new Brick(++currentId, nextBrickType, GameBoard.ENTER_COORDINATES());
     generateNextBrick();
     return nextBrick;
   }
   
+  @Override
   public BrickType getNextBrickType() {
     return nextBrickType;
   }
@@ -27,7 +36,7 @@ public class BrickFactory implements IBrickFactory {
     nextBrickType = types[Math.abs(randomizer.nextInt()) % BRICK_TYPE_COUNT];
   }
   
-  ///FIELDS
+  ///PRIVATE FIELDS
   private static final BrickType[] types = BrickType.class.getEnumConstants();
   private Random randomizer;
   private BrickType nextBrickType;

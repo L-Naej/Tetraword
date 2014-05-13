@@ -3,9 +3,6 @@
  */
 package game;
 
-import game.utils.Coordinates;
-
-import java.util.ArrayList;
 
 /**
  * @author L-Naej

@@ -89,6 +89,7 @@ public class BoardPanel extends JPanel implements MouseListener {
     
     
     
+    
     //help button
 	Path helpPath = FileSystems.getDefault().getPath("img", "helpButton.png");
 	help = new ImageIcon(helpPath.toString()).getImage();

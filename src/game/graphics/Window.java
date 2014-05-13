@@ -1,6 +1,7 @@
 package game.graphics;
 
 import game.GameBoard;
+import game.audio.PlaySound;
 import game.inputs.InputsUserEvent;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -19,6 +20,8 @@ public class Window extends JFrame{
 
 		private static final long serialVersionUID = 1L;
 		private BoardPanel boardPanel;
+		
+		public PlaySound music;
 
 		public Window(GameBoard board){
       
@@ -28,8 +31,10 @@ public class Window extends JFrame{
 		      boardPanel.setBounds(0,0,1024,700);
 		      this.add(boardPanel);
 		      
+		      //music
+		      music.main(null);
 		      
-		       //window
+		      //window
 		      setTitle("TetraWord"); // title     
 		      setDefaultCloseOperation(EXIT_ON_CLOSE); // close application
 		      setLocationRelativeTo(null);

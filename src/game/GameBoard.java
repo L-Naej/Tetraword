@@ -14,6 +14,12 @@ import game.utils.Direction;
  * The generic representation of the board.
  * Contains informations used by physics, gameplay and graphics
  * modules of the game.
+ * It's the entry point of the gameplay part of the game.
+ * The main method of this class is doTurn() which takes care of
+ * running the game. You just have to call it in real time in a loop.
+ * 
+ * @see UserEventsListener
+ * @see IPhysicEventListener
  *
  */
 

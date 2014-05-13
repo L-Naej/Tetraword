@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Tetraword.makejar" default="Makejar" basedir=".">
+  <target name ="Makejar" description="Create a jar for the Tetraword project">
+    <jar jarfile="Tetraword.jar" includes="**/*.class" basedir="bin" manifest="MANIFEST.MF"/>
+  </target>
+</project>

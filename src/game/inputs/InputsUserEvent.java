@@ -5,10 +5,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- * @author Brice Berthelot & L-Naej
- * 
- * Inputs of the user.
- * Keys have particular actions associated
+ * This class maps the actual inputs of the user into
+ * game's command. The mapping occurs through an instance of the {@link UserEventsListener}
+ * interface.
+ * @see UserEventsListener
+ * @author L-Naej & Brice Berthelot
  *
  */
 
@@ -17,18 +18,21 @@ public class InputsUserEvent implements KeyListener {
 	private UserEventsListener listener;
 	private boolean paused;
 	
+  /**
+   * Unique constructor of {@link InputsUserEvent}
+   * @param listener the listener to notify when the user
+   * press a key related to a command.
+   */
 	public InputsUserEvent(UserEventsListener listener) {
 		this.listener = listener;
 		paused = false;
 	}
 	
-	/*
-	 * Call actions from UserEventsListener acording to
-	 * the user input
-	 * 
-	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+
+	/**
+	 * Actual mapping occurs here
 	 */
-	
+	@Override
 	public void keyPressed(KeyEvent event) {
 	    switch (event.getKeyCode()){
 	    	case KeyEvent.VK_DOWN:

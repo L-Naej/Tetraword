@@ -8,12 +8,12 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
- * @author Florent François & Brice Berthelot
- * 
- * General options windows
+ *
+ * The window of the application.
+ * @author L-Naej, Florent François & Brice Berthelot
  *
  */
-
+ 
 public class Window extends JFrame{
 
 

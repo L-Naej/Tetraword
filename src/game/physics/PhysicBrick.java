@@ -28,7 +28,9 @@ import game.utils.Coordinates;
 public class PhysicBrick implements Comparable<PhysicBrick>{
   
   /**
-   * y=0 <=> bottom of the mask
+   * Inner class handling the "mask part" of the
+   * physic brick
+   * y=0 <=> top of the mask
    * x=0 <=> left of the mask
    */
   protected class Mask {
@@ -42,13 +44,25 @@ public class PhysicBrick implements Comparable<PhysicBrick>{
       cleanMask();
     }
     
+    /**
+     * Reset the mask
+     */
     private void cleanMask() {
       for (short i = 0; i < MASK_WIDTH; ++i)
         for (short j = 0; j < MASK_HEIGHT; ++j)
           mask[i][j] = false;
     }
     
-    private boolean test(Mask topMask, Mask bottomMask) {
+    /**
+     * Test if the brick is broken according to this mask.
+     * If so, two new masks are created. Theses masks represent
+     * the two new bricks which are the result of the split.
+     * @param [out parameter] topMask the top part of the splitted mask.
+     * @param [out paramter] bottomMask the bottom part of the splitted mask.
+     * @return true if the brick is brocken, else return false. If returns false,
+     * the out parameters are irrelevant.
+     */
+    private boolean isBrickBrocken(Mask topMask, Mask bottomMask) {
       boolean flag1 = false, flag2 = false, broken = false;
       int top = 0, bottom = 0;
       for (int i = 0; i < MASK_HEIGHT; ++i) {
@@ -116,16 +130,27 @@ public class PhysicBrick implements Comparable<PhysicBrick>{
 
   }
   
+  /**
+   * You can create a {@link PhysicBrick} from the outside only with this
+   * static method.
+   * @param brick the brick you want to generate a physic component to.
+   * @return the PhysicBrick created
+   */
   public static final PhysicBrick createPhysicBrick(Brick brick) {
     PhysicBrick result = new PhysicBrick(brick);
 
     return result;
   }
   
-  public boolean testIsBroken(ArrayList<PhysicBrick> newBricks) {
+  /**
+   * Test if the brick is broken. If so, returns two new bricks.
+   * @param newBricks [out param] index0 : top brick, index 1: bottom brick
+   * @return true if the brick is broken, else return false.
+   */
+  public boolean isBroken(ArrayList<PhysicBrick> newBricks) {
     Mask topMask = new Mask();
     Mask bottoMask = new Mask();
-    if (getCurrentMask().test(topMask, bottoMask)) {
+    if (getCurrentMask().isBrickBrocken(topMask, bottoMask)) {
       newBricks.add(new PhysicBrick(coordinates, topMask));
       newBricks.add(new PhysicBrick(coordinates, bottoMask));
       return true;
@@ -301,11 +326,22 @@ public class PhysicBrick implements Comparable<PhysicBrick>{
       --coordinates.y;
   }
 
-
+  /**
+   * Move the brick left.
+   * Warning: does not test if this move is possible,
+   * this is the responsibility of the caller to make sure it is.
+   * @see tryToMove(Direction direction) for more info
+   */
   public void moveLeft() {
     --coordinates.x;
   }
   
+  /**
+   * Move the brick right
+   * Warning: does not test if this move is possible,
+   * this is the responsibility of the caller to make sure it is.
+   * @see tryToMove(Direction direction) for more info
+   */
   public void moveRight() {
     ++coordinates.x;
   }

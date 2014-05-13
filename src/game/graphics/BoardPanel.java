@@ -145,7 +145,7 @@ public class BoardPanel extends JPanel implements MouseListener{
       //Draw the next Shape
       nextShapePaint(g);
       
-    //Draw the help
+      //Draw the help
       helpPaint(g);
       
       //draw commands if click = true
@@ -154,7 +154,7 @@ public class BoardPanel extends JPanel implements MouseListener{
     	  board.pause();
       }
       
-      // perdu
+      //Lost
       if (board.isBoardFull()) {
     	  g.drawString("You loose!", 435, getSize().height/2);
     	  rejouer.setBounds(395, 370, 234, 53);

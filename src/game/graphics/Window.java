@@ -42,7 +42,7 @@ public class Window extends JFrame{
 		      setSize(1024,700); // size
 		      setResizable(false);
 		      setVisible(true);
-
+		      setFocusable(true);
 		}		
 
 		@Override
@@ -57,6 +57,7 @@ public class Window extends JFrame{
 		      		public void actionPerformed(ActionEvent evt) {
 		      			board.doTurn();
 		      			window.repaint();
+		      			window.requestFocus();
 		      		}
 		      });
 		      

@@ -79,8 +79,6 @@ public class PlaySound
 						since_last_update = (System.currentTimeMillis() - last_update) / 1000.0d;
 					}
 					
-					System.out.println("Playing!");
-					
 					int num_read = 0;
 					byte[] buf = new byte[line.getBufferSize()];
 					
